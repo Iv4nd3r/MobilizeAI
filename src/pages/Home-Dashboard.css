@@ -1,0 +1,248 @@
+/* home-dashboard.css */
+
+/* Basic container styling */
+.home-container {
+    background-color: #17202A;
+    color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    padding: 20px;
+    padding-top: 80px;
+}
+
+/* Greeting Section Styling */
+.home-greeting {
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 80px;
+}
+
+.home-greeting h1 {
+    font-size: 3.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.energy-history-link {
+    display: block;
+    font-size: 1.2rem;
+    color: #a0b1c5;
+    text-decoration: underline;
+    margin-top: 0.5rem;
+}
+
+/* MULAI DASHBOARD BENERAN */
+.weather-info {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #EBEDEF;
+}
+
+.location-info {
+    flex: 2;
+}
+
+.location-info h2 {
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.location-info p {
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.temperature h1 {
+    font-size: 4rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.temperature p {
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.location-change {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.location-change button {
+    background-color: #566573;
+    color: #EBEDEF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Weather Stats Boxes Styling */
+.weather-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+    margin-top: 20px;
+ 
+}
+
+.stat-box {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: left;
+    position: relative;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.stat-box h4 {
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    background: radial-gradient(circle at 50% 50%, #EBEDEF 30%, #D4D0AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+}
+
+.stat-title {
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+
+.stat-icon {
+    width: 40px; 
+    height: 40px;
+}
+
+.stat-box p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #EBEDEF;
+    margin-top: auto;
+}
+
+/* Tips Section Styling */
+.tips-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #EBEDEF;
+    justify-content: space-between;
+    height: calc(100%);
+    align-self: stretch;
+}
+
+.tips-section h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #D4D0AF;
+}
+
+.tips-section .tip-message {
+    background-color: #566573;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    color: #EBEDEF;
+}
+
+/* Tips Input Styling */
+.tips-section input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #34495E;
+    color: #EBEDEF;
+}
+
+.weather-tips-container {
+
+    justify-content: space-between; /* Space between weather and tips */
+    gap: 20px;
+    margin-top: 20px;
+
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+
+    align-items: stretch;
+}
+
+/* Basic container styling */
+.home-container {
+    background-color: #1a1f36;
+    color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    padding: 20px;
+}
+
+/* Header styling */
+.home-header {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.home-header h1 {
+    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #eaeef3;
+}
+
+.energy-history-link {
+    font-size: 1.2rem;
+    color: #a0b1c5;
+    text-decoration: underline;
+}
+
+
+
+
+
+
