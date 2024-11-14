@@ -1,0 +1,254 @@
+.login-page {
+    background-color: #17202F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+/* container mirip register.jss, biar 2 box separated rather than 1 box bagi dua */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    flex-grow: 1;
+    padding: 40px;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    position: relative;
+  }
+
+/* ini kotak gede */
+.hello-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    background: #EBEDEF;
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    padding: 180px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    z-index: 2;
+
+    left: 40px;
+}
+
+.hello-banner h1 {
+    font-family: 'montserrat', sans-serif;
+    font-size: 100px;
+    margin: 0;
+    font-weight: 800;
+    background: linear-gradient(to bottom, #496595, #17202F);
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-weight: 900; 
+    position: relative;
+    right: 420px;
+    
+}
+
+.hello-banner p {
+    font-family: 'montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin: 0;
+
+    color: #5c6b79;
+    color: #496595; 
+    background: linear-gradient(180deg, #496595 0%, #D4D0AF 100%); 
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+     
+    margin-top: 0.5rem;
+    font-weight: bold;
+    
+    position: relative;
+    right: 420px;
+    top: -10px;
+}
+
+/* ============= batas kotak GUE PUSING ==================== */
+
+/* ini kotak kecil */
+.right-panel {
+    background: radial-gradient(circle at center, #D4D0AF 0%, #90A7C4 100%);
+    padding: 40px;
+    border-radius: 20px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    min-height: 550px;
+    height: auto;
+
+    position: absolute;
+    right: 110px;
+
+    z-index: 2;
+    margin-left: 10px;
+
+}
+
+/* Adding margin to the form to push it down */
+.login-form {
+    width: 100%;
+    margin-top: 5rem; 
+}
+
+
+/* Input fields styling */
+.login-form input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    border: none;
+    font-size: 1rem;
+    background-color: #f1f2f5;
+    color: #333;
+    text-indent: 10px;
+}
+
+.login-form input::placeholder {
+    color: #8a94a6;
+}
+
+/* Forgot password link styling */
+.forgot-password {
+    color: #a0b1c5;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: right;
+    width: 100%;
+}
+
+/* Button group styling */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem; 
+    width: 100%;
+    justify-content: center;
+}
+
+.login-btn, .signup-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #3e4f6b;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+}
+
+.login-btn {
+    background-color: transparent;
+}
+
+.signup-btn {
+    background-color: #3e4f6b;
+    color: white;
+}
+
+.login-btn:hover, .signup-btn:hover {
+    background-color: #3e4f6b;
+    color: white;
+}
+
+/* Google button styling */
+.google-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    color: #5c6b79;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive styles */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        width: 90%;
+        border-radius: 20px;
+    }
+
+    .left-panel,
+    .right-panel {
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .left-panel h1 {
+        font-size: 3rem;
+    }
+
+    .button-group {
+        margin-bottom: 1rem;
+    }
+}
+
+.back-button-login {
+    position: absolute;
+    top: 20px; /* Adjust as needed for positioning */
+    left: 20px; /* Adjust as needed for positioning */
+    color: #496595; /* Matches the gradient text color */
+    font-size: 20px;
+    
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .left-panel h1 {
+        font-size: 2.5rem;
+    }
+
+    .right-panel {
+        padding: 1rem;
+    }
+
+    .login-form input {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+
+    .login-btn, .signup-btn, .google-btn {
+        font-size: 0.9rem;
+        padding: 0.4rem;
+    }
+}
