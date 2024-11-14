@@ -1,0 +1,14 @@
+/* Energy Usage Section */
+.energy-usage {
+    background: #2d3e50;
+    border-radius: 20px;
+    padding: 20px;
+    color: #eaeef3;
+}
+
+.energy-chart {
+    height: 200px; /* Placeholder for chart */
+    background: #1a1f36;
+    margin-top: 20px;
+}
+
