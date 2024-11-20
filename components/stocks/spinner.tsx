@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 export const spinner = (
   <svg
     fill="none"

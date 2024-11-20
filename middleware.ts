@@ -1,5 +1,5 @@
 import { kv } from '@vercel/kv'
-import type { NextFetchEvent, NextRequest } from 'next/server'
+import { NextFetchEvent, NextRequest } from 'next/server'
 import { kasadaHandler } from './lib/kasada/kasada-server'
 
 const MAX_REQUESTS = 50

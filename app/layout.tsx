@@ -1,5 +1,4 @@
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
+import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import '@/app/globals.css'
 import { cn } from '@/lib/utils'
@@ -38,13 +37,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          'font-sans antialiased',
-          GeistSans.variable,
-          GeistMono.variable
-        )}
-      >
+      <body className={cn('font-sans')}>
         <KasadaClient />
         <Toaster position="top-center" />
         <Providers
