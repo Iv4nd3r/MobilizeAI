@@ -1,14 +1,88 @@
 /* Energy Usage Section */
 .energy-usage {
-    background: #2d3e50;
+    background: #17202A; /* Matches the overall design */
     border-radius: 20px;
     padding: 20px;
     color: #eaeef3;
+    font-family: 'Montserrat', sans-serif;
 }
 
+.energy-usage h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #eaeef3;
+    margin-bottom: 20px;
+}
+
+.energy-highlight {
+    color: #d6e3ff; /* Highlight color */
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+/* Container for chart and history */
+.energy-usage-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Chart Section */
 .energy-chart {
-    height: 200px; /* Placeholder for chart */
-    background: #1a1f36;
-    margin-top: 20px;
+    flex: 1; /* Take up equal space */
+    height: 300px; /* Height of the chart */
+    background: linear-gradient(180deg, #1a1f36, #283349); /* Subtle gradient */
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: #eaeef3;
+    font-size: 1rem;
 }
 
+/* History Table Section */
+.energy-history {
+    flex: 1; /* Take up equal space */
+    background: #1a1f36; /* Matches the card design */
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styles */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.history-table thead th {
+    text-align: left;
+    padding: 10px 5px;
+    color: #d6e3ff; /* Header text color */
+    font-size: 1rem;
+    font-weight: 700;
+    background: #283349; /* Header background */
+    border-radius: 10px 10px 0 0; /* Rounded top corners */
+}
+
+.history-table tbody tr {
+    background: #283349; /* Row background */
+    border-bottom: 1px solid #34495E;
+}
+
+.history-table tbody tr:last-child {
+    border-bottom: none; /* Remove bottom border for last row */
+}
+
+.history-table td {
+    padding: 10px 5px;
+    color: #eaeef3;
+    font-size: 0.9rem;
+}
+
+.history-table tbody tr:hover {
+    background: #3c4a5a; /* Hover effect */
+}

@@ -34,7 +34,10 @@
 }
 
 .map-placeholder {
-    height: 400px; /* Adjust according to design */
-    border-radius: 10px;
-    overflow: hidden;
+    height: 400px; /* Adjust the height to fit your design */
+    width: 100%; /* Ensure it spans the container */
+    border-radius: 10px; /* Optional: Adds rounded corners */
+    overflow: hidden; /* Ensure no content overflows */
+    background-color: #eaeef3; /* Fallback color in case the map doesn't load */
 }
+

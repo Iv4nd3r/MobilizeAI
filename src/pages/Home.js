@@ -17,6 +17,9 @@ import TempMaxIcon from '../assets/TempMaxIcon.svg';
 import TempMinIcon from '../assets/TempMinIcon.svg';
 import VisibilityIcon from '../assets/VisibilityIcon.svg';
 import WindSpeedIcon from '../assets/WindSpeedIcon.svg';
+import SearchIcon from '../assets/search-icon.svg';
+import AIIcon from '../assets/ai-icon.svg';
+import SendBtn from '../assets/Send-button.svg';
 
 //const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
@@ -53,36 +56,61 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="location-change">
-                    <button>Change Location</button>
-                    <input type="search" placeholder="Search location" />
-                </div>
+    <div className="location-input-container">
+        <input type="text" placeholder="Change Location" className="location-input" />
+        <button className="location-search-btn">
+        <img src={SearchIcon} alt="Temp Max Icon" className="stat-icon" /> 
+        </button>
+    </div>
+</div>
+
+
             </section>
 
         
             {/* Weather Stats Section */}
             <div className="weather-stats">
 
-                <div className="stat-box">
-                    
-                <h4 className="stat-title">
-                    <img src={WindSpeedIcon} alt="Wind Speed Icon" className="stat-icon" /> 
-                        Wind Speed
-                    </h4>
-                    <p>6 KM/H | 12 KM/H Gusts</p>
-                </div>
+            <div className="stat-box wind-speed-box">
+    <h4 className="stat-title">
+        <img src={WindSpeedIcon} alt="Wind Speed Icon" className="stat-icon" />
+        Wind Speed
+    </h4>
+
+        <div className="wind-speed-content">
+            <div className="wind-speed-item">
+                <span className="value">6</span>
+                <span className="unit-label">
+                    <span className="unit">KM/H</span>
+                    <span className="label">Wind</span>
+                </span>
+            </div>
+            <div className="divider"></div>
+            <div className="wind-speed-item">
+                <span className="value">12</span>
+                <span className="unit-label">
+                    <span className="unit">KM/H</span>
+                    <span className="label">Gusts</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
                 <div className="stat-box">
                 <h4 className="stat-title">
                     <img src={FeelsLikeIcon} alt="Feels Like Icon" className="stat-icon" /> 
                         Feels Like
                     </h4>
+
                     <p>25°C</p>
                 </div>
                 <div className="stat-box">
                 <h4 className="stat-title">
                     <img src={VisibilityIcon} alt="Visibility Icon" className="stat-icon" /> 
                         Visibility
-                    </h4>
-                    <p>25 KM</p>
+                    </h4 >
+                    <p className='stat-title'>
+                        25 KM</p> 
                 </div>
                 <div className="stat-box">
                 <h4 className="stat-title">
@@ -91,12 +119,16 @@ const Home = () => {
                     </h4>
                     <p>75%</p>
                 </div>
+
                 <div className="stat-box">
                 <h4 className="stat-title">
                     <img src={PressureIcon} alt="Pressure Icon" className="stat-icon" /> 
                         Pressure
                     </h4>
-                    <p>1.012 hPa</p>
+                    <p>
+                        <span className="value">1.012</span> 
+                        <span className="unit"> hPa</span>
+                    </p>
                 </div>
                 <div className="stat-box">
                 <h4 className="stat-title">
@@ -123,13 +155,37 @@ const Home = () => {
             </div>
 
             {/* Tips Section */}
+            
             <aside className="tips-section">
-                <h3>TIPS</h3>
-                <div className="tip-message">Turn off your AC and use natural ventilation or a fan to save energy. Drive steadily on wet roads to conserve fuel!</div>
-                <div className="tip-message">If it’s chilly at 22°C, layering up with warm clothes or using a blanket is more energy–efficient than turning on the heater!</div>
-                <input type="text" placeholder="Want to ask more?" />
+                
+                <div className="tips-header">
+                    <h3>TIPS</h3>
+                    <img src={AIIcon} alt="AI Icon" className="ai-icon" />
+                </div>
+                <div className="tip-message system">
+                    Turn off your AC and use natural ventilation or a fan to save energy. Drive steadily on wet roads to conserve fuel!
+                </div>
+
+                {/* User Message */}
+                <div className="tip-message user">
+                    Should I use the heater if it feels chilly?
+                </div>
+
+                {/* System Message */}
+                <div className="tip-message system">
+                    If it’s chilly at 22°C, layering up with warm clothes or using a blanket is more energy–efficient than turning on the heater!
+                </div>
+
+                <div className="input-container">
+                    <input type="text" placeholder="Want to ask more?" className="input-box" />
+                    <button className="send-button">
+                        <img src={SendBtn} alt="Send" />
+                    </button>
+                </div>
+
             </aside>
-        </div>
+            </div>
+
 
 
             {/* Map Section */}
@@ -141,20 +197,70 @@ const Home = () => {
                         <option>Vehicle Type</option>
                     </select>
                 </div>
-                <div className="map-placeholder">[Map goes here]</div>
+                <div className="map-placeholder">
+                    {/* Embed the OpenStreetMap using an iframe */}
+                    <iframe
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=112.41,-2.53,120,0&layer=mapnik"
+                        title="OpenStreetMap"
+                        style={{
+                            border: 0,
+                            width: "100%",
+                            height: "100%",
+                        }}
+                    ></iframe>
+                </div>
             </section>
 
             {/* Energy Usage Section */}
             <section className="energy-usage">
-                <h2>Today, you’ve spent 12.5 kWh of energy</h2>
-                <div className="energy-chart">
-                    {/* Placeholder for the energy usage chart */}
-                </div>
-                <div className="energy-history">
-                    {/* Placeholder for the energy history table */}
+                <h2>
+                    Today, you’ve spent <span className="energy-highlight">12.5</span> kWh of energy
+                </h2>
+                <div className="energy-usage-container">
+                    {/* Chart Section */}
+                    <div className="energy-chart">
+                        {/* Placeholder for the energy usage chart */}
+                        <p>[Chart goes here]</p>
+                    </div>
+
+                    {/* History Table Section */}
+                    <div className="energy-history">
+                        <table className="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Total Energy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Oct 15, 2024</td>
+                                    <td>12.5 kWh</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 14, 2024</td>
+                                    <td>13.4 kWh</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 13, 2024</td>
+                                    <td>10.2 kWh</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 12, 2024</td>
+                                    <td>20.5 kWh</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 10, 2024</td>
+                                    <td>20.3 kWh</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
+
         </div>
+        
     );
 };
 

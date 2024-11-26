@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'

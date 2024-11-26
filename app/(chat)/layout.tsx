@@ -1,4 +1,3 @@
-import React from 'react'
 import { SidebarDesktop } from '@/components/sidebar-desktop'
 
 interface ChatLayoutProps {

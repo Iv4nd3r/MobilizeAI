@@ -6,7 +6,6 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import AboutMePage from './pages/AboutMePage';
-import AboutUs from './pages/AboutUs'; 
 
 // App component
 function App() {
@@ -19,7 +18,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/AboutMePage" element={<AboutMePage />} />
-        <Route path="/aboutus" element={<AboutUs />} />
       </Routes>
     </Router>
   );

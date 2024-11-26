@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/eslintrc",
   "root": true,
   "extends": [
-    "next/core-web-vitals",
+    "react-app",
     "prettier",
     "plugin:tailwindcss/recommended"
   ],
@@ -16,11 +16,5 @@
       "callees": ["cn", "cva"],
       "config": "tailwind.config.js"
     }
-  },
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "parser": "@typescript-eslint/parser"
-    }
-  ]
+  }
 }
