@@ -7,6 +7,7 @@ import './Home-EnergyHistory.css'
 import { Link } from 'react-router-dom'
 import LocationComponent from './components/locationcomponent'
 import { fetchWeatherData } from './api/weather'
+import { fetchGeocodingData } from './api/geocoding'
 
 // Import SVG icons
 import CloudIcon from '../src/assets/CloudIcon.svg'
@@ -28,6 +29,7 @@ const Home = () => {
   const [userName, setUserName] = useState('')
   const [weatherData, setWeatherData] = useState(null)
   const [location, setLocation] = useState({ lat: 0, lon: 0 }) // Add state for location
+  const [searchLocation, setSearchLocation] = useState('') // Add state for search location
 
   useEffect(() => {
     // Retrieve the user's name from local storage
@@ -50,6 +52,22 @@ const Home = () => {
       fetchWeather(location.lat, location.lon)
     }
   }, [location]) // Add location as a dependency
+
+  const handleSearch = async () => {
+    try {
+      const geocodingData = await fetchGeocodingData(searchLocation)
+      setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+      fetchWeather(geocodingData.lat, geocodingData.lon)
+    } catch (error) {
+      console.error('Error fetching geocoding data:', error)
+    }
+  }
+
+  const handleLocationSearch = e => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
 
   return (
     <div className="home-container">
@@ -90,13 +108,16 @@ const Home = () => {
               <div className="location-input-container">
                 <input
                   type="text"
-                  placeholder="Change Location"
+                  placeholder="Not the right location ?"
                   className="location-input"
+                  value={searchLocation}
+                  onChange={e => setSearchLocation(e.target.value)}
+                  onKeyUp={handleLocationSearch}
                 />
                 <button className="location-search-btn">
                   <img
                     src={SearchIcon}
-                    alt="Temp Max Icon"
+                    alt="Search Icon"
                     className="stat-icon"
                   />
                 </button>

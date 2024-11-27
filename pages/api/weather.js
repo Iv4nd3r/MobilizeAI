@@ -5,7 +5,7 @@ export const fetchWeatherData = async (lat, lon) => {
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`
     )
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      throw new Error('Unable to fetch weather data, please try again')
     }
     const data = await response.json()
     return data
