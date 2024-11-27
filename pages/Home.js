@@ -27,6 +27,7 @@ const Home = () => {
   const [userName, setUserName] = useState('')
   const [weatherData, setWeatherData] = useState(null)
   const [forecastData, setForecastData] = useState(null)
+  const [formattedDate, setFormattedDate] = useState('')
   const [location, setLocation] = useState({ lat: 0, lon: 0 }) // Add state for location
   const [searchLocation, setSearchLocation] = useState('') // Add state for search location
   const [userInput, setUserInput] = useState('')
@@ -61,6 +62,21 @@ const Home = () => {
       fetchWeather(location.lat, location.lon)
     }
   }, [location]) // Add location as a dependency
+
+  useEffect(() => {
+    if (weatherData && weatherData.dt) {
+      const unixTime = weatherData.dt * 1000 // Convert to milliseconds
+      const date = new Date(unixTime)
+      const options = {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      }
+      const formatted = date.toLocaleDateString('en-ID', options)
+      setFormattedDate(formatted)
+    }
+  }, [weatherData])
 
   const handleSearch = async () => {
     try {
@@ -167,8 +183,17 @@ const Home = () => {
                   ? `${weatherData.name}, ${weatherData.sys.country}`
                   : 'Location Not Found'}
               </h2>
-              <p>Thursday, October 10th 2024</p>
+              <p>{formattedDate}</p>
               <div className="temperature">
+                {weatherData &&
+                  weatherData.weather &&
+                  weatherData.weather[0] && (
+                    <img
+                      src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                      alt="Weather Icon"
+                      className="weather-icon"
+                    />
+                  )}
                 <h1>{weatherData ? `${weatherData.main.temp}°C` : 'N/A'}</h1>
                 <p>
                   {weatherData
