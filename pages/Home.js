@@ -8,28 +8,35 @@ import { Link } from 'react-router-dom'
 import LocationComponent from './components/locationcomponent'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
+import { getGenerativeAITips } from './api/ai'
 
 // Import SVG icons
-import CloudIcon from '../src/assets/CloudIcon.svg'
 import FeelsLikeIcon from '../src/assets/FeelsLikeIcon.svg'
 import HumidityIcon from '../src/assets/HumidityIcon.svg'
 import PressureIcon from '../src/assets/PressureIcon.svg'
-import TempMaxIcon from '../src/assets/TempMaxIcon.svg'
-import TempMinIcon from '../src/assets/TempMinIcon.svg'
 import VisibilityIcon from '../src/assets/VisibilityIcon.svg'
 import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
 import SendBtn from '../src/assets/Send-button.svg'
 
-//const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
+let initialFetchDone = false
 
 const Home = () => {
   // State to store the user's name
   const [userName, setUserName] = useState('')
   const [weatherData, setWeatherData] = useState(null)
+  const [forecastData, setForecastData] = useState(null)
   const [location, setLocation] = useState({ lat: 0, lon: 0 }) // Add state for location
   const [searchLocation, setSearchLocation] = useState('') // Add state for search location
+  const [userInput, setUserInput] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [chatHistory, setChatHistory] = useState([
+    {
+      type: 'system',
+      message: 'Hello, Ivander! How can I help you today?'
+    }
+  ])
 
   useEffect(() => {
     // Retrieve the user's name from local storage
@@ -41,8 +48,10 @@ const Home = () => {
     const fetchWeather = async (lat, lon) => {
       try {
         // Example coordinates
-        const data = await fetchWeatherData(lat, lon)
-        setWeatherData(data)
+        const currentData = await fetchWeatherData(lat, lon, 'current')
+        setWeatherData(currentData)
+        const forecastData = await fetchWeatherData(lat, lon, 'forecast')
+        setForecastData(forecastData)
       } catch (error) {
         console.error('Error fetching weather data:', error)
       }
@@ -66,6 +75,70 @@ const Home = () => {
   const handleLocationSearch = e => {
     if (e.key === 'Enter') {
       handleSearch()
+    }
+  }
+
+  useEffect(() => {
+    if (weatherData !== null || forecastData !== null) {
+      fetchInitialAITips(weatherData, forecastData)
+    }
+  }, [weatherData])
+
+  const fetchInitialAITips = async (currentWeather, forecastWeather) => {
+    if (!initialFetchDone) {
+      const newChatHistory = [
+        ...chatHistory,
+        { type: 'user', message: userInput },
+        { type: 'system', message: 'Generating ...' }
+      ]
+      setChatHistory(newChatHistory)
+      setUserInput('')
+      setIsGenerating(true)
+
+      try {
+        const response = await getGenerativeAITips(
+          currentWeather,
+          forecastWeather,
+          'Give a list of recommendation based on these weather condition and generate a outut like this : Based on the weather data, I recommend these actions you can do to minimize impact on our beloved Earth\n* Recommendation 1 and reasons\n* Recommendation 2 and reasons\n* Recommendation 3 and reasons\n* Recommendation x and reasons\n\nEnsure each recommendation is on a new line and properly formatted with bullet points.'
+        )
+        setChatHistory([{ type: 'system', message: response }])
+      } catch (error) {
+        console.error('Error fetching AI response:', error)
+      } finally {
+        setIsGenerating(false)
+      }
+    }
+    initialFetchDone = true
+  }
+
+  const fetchAITips = async () => {
+    if (userInput.trim() === '') return
+    const newChatHistory = [
+      ...chatHistory,
+      { type: 'user', message: userInput },
+      { type: 'system', message: 'Generating ...' }
+    ]
+    setChatHistory(newChatHistory)
+    setUserInput('')
+    setIsGenerating(true)
+
+    try {
+      const response = await getGenerativeAITips(
+        weatherData,
+        forecastData,
+        userInput
+      )
+      setChatHistory([...newChatHistory, { type: 'system', message: response }])
+    } catch (error) {
+      console.error('Error fetching AI response:', error)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  const handleChatBox = e => {
+    if (e.key === 'Enter' && !isGenerating) {
+      fetchAITips()
     }
   }
 
@@ -213,29 +286,21 @@ const Home = () => {
           <h3>TIPS</h3>
           <img src={AIIcon} alt="AI Icon" className="ai-icon" />
         </div>
-        <div className="tip-message system">
-          Turn off your AC and use natural ventilation or a fan to save energy.
-          Drive steadily on wet roads to conserve fuel!
-        </div>
-
-        {/* User Message */}
-        <div className="tip-message user">
-          Should I use the heater if it feels chilly?
-        </div>
-
-        {/* System Message */}
-        <div className="tip-message system">
-          If it’s chilly at 22°C, layering up with warm clothes or using a
-          blanket is more energy–efficient than turning on the heater!
-        </div>
-
+        {chatHistory.map((chat, index) => (
+          <div key={index} className={`tip-message ${chat.type}`}>
+            {chat.message}
+          </div>
+        ))}
         <div className="input-container">
           <input
             type="text"
             placeholder="Want to ask more?"
             className="input-box"
+            value={userInput}
+            onChange={e => setUserInput(e.target.value)}
+            onKeyUp={handleChatBox}
           />
-          <button className="send-button">
+          <button className="send-button" onClick={fetchAITips}>
             <img src={SendBtn} alt="Send" />
           </button>
         </div>

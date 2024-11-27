@@ -34,6 +34,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
+    "@google/generative-ai": "^0.21.0",
     "@svgr/webpack": "^8.1.0",
     "@types/body-parser": "^1.19.5",
     "autoprefixer": "^10.4.20",
