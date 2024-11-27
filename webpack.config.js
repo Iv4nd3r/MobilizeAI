@@ -1,49 +1,53 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './pages/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: 'babel-loader'
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'], // CSS loader
+        use: ['style-loader', 'css-loader', 'postcss-loader'] // CSS loader
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: 'file-loader', // Font files loader
+        use: 'file-loader' // Font files loader
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack', 'url-loader'], // SVG loader
-      },
-    ],
+        use: ['@svgr/webpack', 'url-loader'] // SVG loader
+      }
+    ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: './public/index.html'
     }),
+    new Dotenv({
+      path: './.env.local',
+      safe: true
+    })
   ],
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, 'public')
     },
     historyApiFallback: true, // This line is crucial for React Router to work with Webpack Dev Server
     compress: true,
     port: 3000,
-    hot: true,
-  },
-};
-
+    hot: true
+  }
+}

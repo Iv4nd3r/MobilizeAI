@@ -12,14 +12,17 @@ import {
   createStreamableValue
 } from 'ai/rsc'
 
-import { BotCard, BotMessage } from '@/components/stocks'
+import { BotCard, BotMessage } from '@/Legacy component/components/stocks'
 
 import { nanoid, sleep } from '@/lib/utils'
-import { saveChat } from '@/app/actions'
-import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
+import { saveChat } from '@/Legacy component/app/actions'
+import {
+  SpinnerMessage,
+  UserMessage
+} from '@/Legacy component/components/stocks/message'
 import { Chat } from '../types'
 import { auth } from '@/auth'
-import { CheckIcon, SpinnerIcon } from '@/components/ui/icons'
+import { CheckIcon, SpinnerIcon } from '@/Legacy component/components/ui/icons'
 import { format } from 'date-fns'
 import { experimental_streamText } from 'ai'
 import { google } from 'ai/google'
@@ -60,38 +63,38 @@ async function submitUserMessage(content: string) {
   const messageStream = createStreamableUI(null)
   const uiStream = createStreamableUI()
 
-    ; (async () => {
-      try {
-        let textContent = ''
-        spinnerStream.done(null)
-        
-        aiState.update({
-          ...aiState.get(),
-          messages: [
-            ...aiState.get().messages,
-            {
-              id: nanoid(),
-              role: 'assistant',
-              content: textContent
-            }
-          ]
-        })
+  ;(async () => {
+    try {
+      let textContent = ''
+      spinnerStream.done(null)
 
-        uiStream.done()
-        textStream.done()
-        messageStream.done()
-      } catch (e) {
-        console.error(e)
+      aiState.update({
+        ...aiState.get(),
+        messages: [
+          ...aiState.get().messages,
+          {
+            id: nanoid(),
+            role: 'assistant',
+            content: textContent
+          }
+        ]
+      })
 
-        const error = new Error(
-          'The AI got rate limited, please try again later.'
-        )
-        uiStream.error(error)
-        textStream.error(error)
-        messageStream.error(error)
-        aiState.done()
-      }
-    })()
+      uiStream.done()
+      textStream.done()
+      messageStream.done()
+    } catch (e) {
+      console.error(e)
+
+      const error = new Error(
+        'The AI got rate limited, please try again later.'
+      )
+      uiStream.error(error)
+      textStream.error(error)
+      messageStream.error(error)
+      aiState.done()
+    }
+  })()
 
   return {
     id: nanoid(),
@@ -124,10 +127,10 @@ export async function requestCode() {
     </div>
   )
 
-    ; (async () => {
-      await sleep(2000)
-      ui.done()
-    })()
+  ;(async () => {
+    await sleep(2000)
+    ui.done()
+  })()
 
   return {
     status: 'requires_code',
@@ -152,33 +155,33 @@ export async function validateCode() {
     </div>
   )
 
-    ; (async () => {
-      await sleep(2000)
+  ;(async () => {
+    await sleep(2000)
 
-      ui.done(
-        <div className="flex flex-col items-center text-center justify-center gap-3 p-4 text-emerald-700">
-          <CheckIcon />
-          <div>Payment Succeeded</div>
-          <div className="text-sm text-zinc-600">
-            Thanks for your purchase! You will receive an email confirmation
-            shortly.
-          </div>
+    ui.done(
+      <div className="flex flex-col items-center text-center justify-center gap-3 p-4 text-emerald-700">
+        <CheckIcon />
+        <div>Payment Succeeded</div>
+        <div className="text-sm text-zinc-600">
+          Thanks for your purchase! You will receive an email confirmation
+          shortly.
         </div>
-      )
+      </div>
+    )
 
-      aiState.done({
-        ...aiState.get(),
-        messages: [
-          ...aiState.get().messages.slice(0, -1),
-          {
-            role: 'assistant',
-            content: 'The purchase has completed successfully.'
-          }
-        ]
-      })
+    aiState.done({
+      ...aiState.get(),
+      messages: [
+        ...aiState.get().messages.slice(0, -1),
+        {
+          role: 'assistant',
+          content: 'The purchase has completed successfully.'
+        }
+      ]
+    })
 
-      status.done('completed')
-    })()
+    status.done('completed')
+  })()
 
   return {
     status: status.value,
@@ -214,7 +217,7 @@ export const AI = createAI<AIState, UIState>({
   actions: {
     submitUserMessage,
     requestCode,
-    validateCode,
+    validateCode
   },
   initialUIState: [],
   initialAIState: { chatId: nanoid(), interactions: [], messages: [] },
@@ -271,26 +274,17 @@ export const getUIStateFromAIState = (aiState: Chat) => {
       display:
         message.role === 'assistant' ? (
           message.display?.name === 'showFlights' ? (
-            <BotCard>
-              (//Add some state)
-            </BotCard>
+            <BotCard>(//Add some state)</BotCard>
           ) : message.display?.name === 'showSeatPicker' ? (
-            <BotCard>
-              (//add some summary)
-            </BotCard>
+            <BotCard>(//add some summary)</BotCard>
           ) : message.display?.name === 'showHotels' ? (
-            <BotCard>
-              (//add something here)
-            </BotCard>
+            <BotCard>(//add something here)</BotCard>
           ) : message.content === 'The purchase has completed successfully.' ? (
-            <BotCard>
-            </BotCard>
+            <BotCard></BotCard>
           ) : message.display?.name === 'showBoardingPass' ? (
-            <BotCard>
-            </BotCard>
+            <BotCard></BotCard>
           ) : message.display?.name === 'listDestinations' ? (
-            <BotCard>
-            </BotCard>
+            <BotCard></BotCard>
           ) : (
             <BotMessage content={message.content} />
           )
