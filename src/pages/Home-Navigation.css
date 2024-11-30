@@ -1,0 +1,43 @@
+/* Map Section */
+.map-section {
+    position: relative;
+    background: #eaeef3;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 20px;
+    margin-top: 80px;
+}
+
+.map-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9); /* Slightly opaque for better visibility */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it's above the map */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Spacing between inputs */
+}
+
+.map-overlay input[type="text"],
+.map-overlay select {
+    width: 200px; /* Adjust width as necessary */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.map-placeholder {
+    height: 400px; /* Adjust the height to fit your design */
+    width: 100%; /* Ensure it spans the container */
+    border-radius: 10px; /* Optional: Adds rounded corners */
+    overflow: hidden; /* Ensure no content overflows */
+    background-color: #eaeef3; /* Fallback color in case the map doesn't load */
+}
+

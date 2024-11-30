@@ -86,3 +86,75 @@
 .history-table tbody tr:hover {
     background: #3c4a5a; /* Hover effect */
 }
+
+/* Energy Usage Container */
+.energy-usage-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Chart Container */
+.energy-chart {
+    flex: 1;
+    min-width: 300px; /* Adjust based on your layout */
+    height: 300px;    /* Ensures the chart doesn't collapse */
+    background-color: #1a1f36; /* Matches the theme background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* History Table Styling */
+.energy-history {
+    flex: 1;
+    min-width: 300px;
+    background-color: #1a1f36;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th, 
+.history-table td {
+    text-align: left;
+    padding: 8px 12px;
+    color: #eaeef3;
+}
+
+.history-table th {
+    background-color: #283349;
+    color: #d6e3ff;
+    font-weight: bold;
+}
+
+.history-table tr:nth-child(even) {
+    background-color: #232b3b;
+}
+
+.history-table tr:nth-child(odd) {
+    background-color: #1a1f36;
+}
+
+/* Adjust the layout for responsiveness */
+@media (max-width: 768px) {
+    .energy-usage-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .energy-chart, .energy-history {
+        width: 100%;
+    }
+}
