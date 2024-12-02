@@ -41,3 +41,22 @@
     background-color: #eaeef3; /* Fallback color in case the map doesn't load */
 }
 
+/* pages/Home-Navigation.css */
+.routing-instructions {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.instructions-content {
+    max-height: 200px;
+    overflow-y: auto;
+}

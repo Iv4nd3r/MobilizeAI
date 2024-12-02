@@ -6,7 +6,8 @@ import Register from './Register'
 import Login from './Login'
 import Home from './Home'
 import AboutMePage from './AboutMePage'
-import './index.css';
+import NotFound from './NotFound'
+import './index.css'
 
 // App component
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/AboutMePage" element={<AboutMePage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )
