@@ -11,10 +11,14 @@ import {
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-routing-machine'
+import 'leaflet-providers'
 
 // Fix for default marker icon issue with Webpack
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
+import Legend from '../../src/components/legend'
+import legendData from '../../src/components/maps-legend.json'
 
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -29,14 +33,14 @@ const RoutingMachine = ({ start, end }) => {
   useEffect(() => {
     if (!map) return
 
+    const osrmRouter = L.Routing.osrmv1({
+      serviceUrl: 'https://router.project-osrm.org/route/v1'
+    })
+
     const routingControl = L.Routing.control({
       waypoints: [L.latLng(start.lat, start.lng), L.latLng(end.lat, end.lng)],
       routeWhileDragging: true,
-      router: L.Routing.openrouteservice({
-        serviceUrl:
-          'https://api.openrouteservice.org/v2/directions/driving-car',
-        apiKey: process.env.OPENROUTESERVICE_API_KEY
-      })
+      router: osrmRouter
     }).addTo(map)
 
     return () => map.removeControl(routingControl)
@@ -67,10 +71,10 @@ const MapComponent = ({ latitude, longitude, startLocation, endLocation }) => {
       }}
       zoomControl={false}
     >
-      <LayersControl position="topright">
+      <LayersControl position="bottomright">
         <LayersControl.BaseLayer checked name="OpenStreetMap">
           <TileLayer
-            url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
         </LayersControl.BaseLayer>
@@ -92,7 +96,20 @@ const MapComponent = ({ latitude, longitude, startLocation, endLocation }) => {
             attribution="&copy; OpenWeatherMap"
           />
         </LayersControl.Overlay>
+        <LayersControl.Overlay name="Clouds">
+          <TileLayer
+            url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
+            attribution="&copy; OpenWeatherMap"
+          />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="Sea Level Pressure">
+          <TileLayer
+            url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
+            attribution="&copy; OpenWeatherMap"
+          />
+        </LayersControl.Overlay>
       </LayersControl>
+      <Legend />
       <Marker position={[latitude, longitude]}>
         <Popup>You are here</Popup>
       </Marker>

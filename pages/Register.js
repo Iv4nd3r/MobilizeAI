@@ -1,12 +1,12 @@
 // src/pages/Register.js
 import React from 'react'
-import Header from './components/Header' // Import Header if you want to include it at the top
+import Header from '../src/components/Header' // Import Header if you want to include it at the top
 import GoogleLogo from '../src/assets/google-button.svg'
 
 import './Register.css'
 
 import { Link } from 'react-router-dom'
-import LandingPage from './components/LandingPage'
+import LandingPage from '../src/components/LandingPage'
 
 function Register() {
   return (

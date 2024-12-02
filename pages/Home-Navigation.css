@@ -1,62 +1,74 @@
 /* Map Section */
+/* Header Section */
+.header {
+  position: relative;
+  z-index: 1002; /* Ensure the header is above the map */
+}
+
+/* Map Section */
 .map-section {
-    position: relative;
-    background: #eaeef3;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    padding: 20px;
-    margin-top: 80px;
+  position: relative;
+  background: #eaeef3;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding: 20px;
+  margin-top: 80px;
+  z-index: 1; /* Ensure the map is below the header */
 }
-
 .map-overlay {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(255, 255, 255, 0.9); /* Slightly opaque for better visibility */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure it's above the map */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Spacing between inputs */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Slightly opaque for better visibility */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it's above the map */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between inputs */
 }
 
-.map-overlay input[type="text"],
+.map-overlay input[type='text'],
 .map-overlay select {
-    width: 200px; /* Adjust width as necessary */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    outline: none;
+  width: 200px; /* Adjust width as necessary */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
 }
 
 .map-placeholder {
-    height: 400px; /* Adjust the height to fit your design */
-    width: 100%; /* Ensure it spans the container */
-    border-radius: 10px; /* Optional: Adds rounded corners */
-    overflow: hidden; /* Ensure no content overflows */
-    background-color: #eaeef3; /* Fallback color in case the map doesn't load */
+  height: 400px; /* Adjust the height to fit your design */
+  width: 100%; /* Ensure it spans the container */
+  border-radius: 10px; /* Optional: Adds rounded corners */
+  overflow: hidden; /* Ensure no content overflows */
+  background-color: #eaeef3; /* Fallback color in case the map doesn't load */
 }
 
 /* pages/Home-Navigation.css */
 .routing-instructions {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .instructions-content {
-    max-height: 200px;
-    overflow-y: auto;
+  max-height: 200px;
+  overflow-y: auto;
 }

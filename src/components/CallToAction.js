@@ -1,6 +1,6 @@
 // src/components/CallToAction.js
-import React from 'react';
-import LaptopIllustration from '../assets/illustration-1.svg';
+import React from 'react'
+import LaptopIllustration from '/src/assets/illustration-1.svg'
 
 const CallToAction = () => {
   return (
@@ -19,7 +19,7 @@ const CallToAction = () => {
         Efficient. Smart. Sustainable.
       </h4>
     </section>
-  );
-};
+  )
+}
 
-export default CallToAction;
+export default CallToAction

@@ -12,7 +12,9 @@ const RoutingInstructions = ({ instructions }) => {
       {!isCollapsed && (
         <div className="instructions-content">
           {instructions.map((instruction, index) => (
-            <p key={index}>{instruction}</p>
+            <p key={index} style={{ color: 'black' }}>
+              {instruction}
+            </p>
           ))}
         </div>
       )}

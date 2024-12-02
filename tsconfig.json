@@ -32,6 +32,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "pages/components/locationcomponent.js"  ],
+, "src/components/locationcomponent.js"  ],
   "exclude": ["node_modules"]
 }
