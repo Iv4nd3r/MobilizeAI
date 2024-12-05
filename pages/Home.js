@@ -44,7 +44,7 @@ import VisibilityIcon from '../src/assets/VisibilityIcon.svg'
 import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
-import SendBtn from '../src/assets/Send-button.svg'
+import SendBtn from '../src/assets/Send-Button.svg'
 
 let initialFetchDone = false
 
