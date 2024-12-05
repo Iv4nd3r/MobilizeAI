@@ -58,6 +58,7 @@ const Home = () => {
   const [searchLocation, setSearchLocation] = useState('') // Add state for search location
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
+  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
   const [instructions, setInstructions] = useState([])
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -117,10 +118,29 @@ const Home = () => {
     }
   }
 
-  const handleLocationSearch = e => {
-    if (e.key === 'Enter') {
-      handleSearch()
+  const handleLocationSearch = async e => {
+    setSearchLocation(e.target.value)
+    if (e.target.value.length > 2) {
+      try {
+        const response = await fetch(
+          `https://api.openrouteservice.org/geocode/autocomplete?api_key=${process.env.OPENROUTESERVICE_API_KEY}&text=${e.target.value}`
+        )
+        const data = await response.json()
+        setAutocompleteSuggestions(
+          data.features.map(feature => feature.properties.label)
+        )
+      } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error)
+      }
+    } else {
+      setAutocompleteSuggestions([])
     }
+  }
+
+  const handleSuggestionClick = suggestion => {
+    setSearchLocation(suggestion)
+    setAutocompleteSuggestions([])
+    handleSearch()
   }
 
   useEffect(() => {
@@ -190,6 +210,12 @@ const Home = () => {
   const handleChatBox = e => {
     if (e.key === 'Enter' && !isGenerating) {
       fetchAITips()
+    }
+  }
+
+  const handleSearchBox = e => {
+    if (e.key === 'Enter') {
+      handleSearch()
     }
   }
 
@@ -305,10 +331,9 @@ const Home = () => {
                   placeholder="Not the right location ?"
                   className="location-input"
                   value={searchLocation}
-                  onChange={e => setSearchLocation(e.target.value)}
-                  onKeyUp={handleLocationSearch}
+                  onChange={handleLocationSearch}
+                  onKeyUp={handleSearchBox}
                 />
-
                 <button className="location-search-btn">
                   <img
                     src={SearchIcon}
@@ -317,6 +342,19 @@ const Home = () => {
                   />
                 </button>
               </div>
+              {autocompleteSuggestions.length > 0 && (
+                <div className="autocomplete-suggestions">
+                  {autocompleteSuggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="autocomplete-suggestion"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -345,7 +383,9 @@ const Home = () => {
                 <div className="divider"></div>
                 <div className="wind-speed-item">
                   <span className="value">
-                    {weatherData ? `${weatherData.wind.gust}` : '-'}
+                    {weatherData && weatherData.wind && weatherData.wind.gust
+                      ? `${weatherData.wind.gust}`
+                      : '-'}
                   </span>
                   <span className="unit-label">
                     <span className="unit">KM/H</span>
