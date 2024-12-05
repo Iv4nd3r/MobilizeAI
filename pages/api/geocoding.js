@@ -21,7 +21,12 @@ export const fetchGeocodingData = async location => {
     if (data.features.length === 0) {
       throw new Error('Location not found')
     }
-    const coordinates = data.features[0].geometry.coordinates
+    const feature = data.features[0]
+    const coordinates = feature.geometry.coordinates
+    const bbox = feature.bbox
+    if (bbox && bbox.length >= 4) {
+      return { lat: (bbox[1] + bbox[3]) / 2, lon: (bbox[0] + bbox[2]) / 2 }
+    }
     return { lat: coordinates[1], lon: coordinates[0] } // Return lat and lon for OpenRouteService API
   }
 }

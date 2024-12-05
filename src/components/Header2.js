@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '/src/assets/mobilizeai-logo.svg'; // Make sure the path to the logo is correct
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import logo from '/src/assets/mobilizeai-logo.svg' // Make sure the path to the logo is correct
 
 const Header2 = () => {
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-  const navigate = useNavigate();
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false)
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    console.log("User logged out"); // Add actual logout logic here
-    navigate('/'); // Redirect to the landing page
-  };
+    console.log('User logged out') // Add actual logout logic here
+    navigate('/') // Redirect to the landing page
+  }
 
   return (
     <>
@@ -41,8 +41,12 @@ const Header2 = () => {
       {showLogoutPopup && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="relative bg-white w-[90%] max-w-[400px] p-6 rounded-lg shadow-lg">
-            <h2 className="text-[#17202F] font-bold text-lg mb-4">Confirm Logout</h2>
-            <p className="text-[#496595] mb-6">Are you sure you want to log out?</p>
+            <h2 className="text-[#17202F] font-bold text-lg mb-4">
+              Confirm Logout
+            </h2>
+            <p className="text-[#496595] mb-6">
+              Are you sure you want to log out?
+            </p>
             <div className="flex justify-between">
               <button
                 onClick={handleLogout}
@@ -67,7 +71,7 @@ const Header2 = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Header2;
+export default Header2

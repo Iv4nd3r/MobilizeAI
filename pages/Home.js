@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import './Home-Navigation.css'
 import './Home-Dashboard.css'
@@ -11,6 +11,7 @@ import RoutingInstructions from '../src/components/RoutingInstructions.'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
+import autocompleteSearch from './api/autocomplete'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -68,6 +69,7 @@ const Home = () => {
       message: 'Hello, Ivander! How can I help you today?'
     }
   ])
+  const mapRef = useRef(null)
 
   useEffect(() => {
     // Retrieve the user's name from local storage
@@ -108,11 +110,29 @@ const Home = () => {
     }
   }, [weatherData])
 
-  const handleSearch = async () => {
+  const handleSearch = async key => {
     try {
       const geocodingData = await fetchGeocodingData(searchLocation)
-      setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
-      fetchWeather(geocodingData.lat, geocodingData.lon)
+      switch (key) {
+        case 1:
+          setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          fetchWeather(geocodingData.lat, geocodingData.lon)
+          break
+        case 2:
+          setStartLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          if (endLocation.lat !== 0 && endLocation.lon !== 0) {
+            fetchRoutes(mapRef.current, geocodingData, endLocation)
+          }
+          break
+        case 3:
+          setEndLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          if (startLocation.lat !== 0 && startLocation.lon !== 0) {
+            fetchRoutes(mapRef.current, startLocation, geocodingData)
+          }
+          break
+        default:
+          console.error('Invalid key value passed to handleSearch')
+      }
     } catch (error) {
       console.error('Error fetching geocoding data:', error)
     }
@@ -122,12 +142,19 @@ const Home = () => {
     setSearchLocation(e.target.value)
     if (e.target.value.length > 2) {
       try {
-        const response = await fetch(
-          `https://api.openrouteservice.org/geocode/autocomplete?api_key=${process.env.OPENROUTESERVICE_API_KEY}&text=${e.target.value}`
-        )
-        const data = await response.json()
+        const data = await autocompleteSearch(e.target.value)
         setAutocompleteSuggestions(
-          data.features.map(feature => feature.properties.label)
+          data.features.map(feature => {
+            let bbox = feature.bbox
+            if (!bbox && feature.geometry && feature.geometry.coordinates) {
+              const [lon, lat] = feature.geometry.coordinates
+              bbox = [lon, lat, lon, lat] // Create bbox with the same coordinates
+            }
+            return {
+              label: feature.properties.label,
+              bbox: bbox
+            }
+          })
         )
       } catch (error) {
         console.error('Error fetching autocomplete suggestions:', error)
@@ -137,10 +164,33 @@ const Home = () => {
     }
   }
 
-  const handleSuggestionClick = suggestion => {
-    setSearchLocation(suggestion)
-    setAutocompleteSuggestions([])
-    handleSearch()
+  const handleSuggestionClick = async (suggestion, key, bbox) => {
+    let locationData
+    if (bbox && bbox.length >= 4) {
+      locationData = {
+        lat: (bbox[1] + bbox[3]) / 2,
+        lon: (bbox[0] + bbox[2]) / 2
+      }
+    } else {
+      // Fallback to geocoding data if bbox is not available
+      locationData = await fetchGeocodingData(suggestion)
+    }
+
+    switch (key) {
+      case 1:
+        setLocation(locationData)
+        fetchWeatherData(locationData.lat, locationData.lon)
+        break
+      case 2:
+        setStartLocation(location)
+        setEndLocation(locationData)
+        if (endLocation.lat !== 0 && endLocation.lon !== 0) {
+          fetchRoutes(mapRef.current, startLocation, endLocation)
+        }
+        break
+      default:
+        console.error('Invalid key value passed to handleSuggestionClick')
+    }
   }
 
   useEffect(() => {
@@ -213,9 +263,9 @@ const Home = () => {
     }
   }
 
-  const handleSearchBox = e => {
+  const handleSearchBox = (e, key) => {
     if (e.key === 'Enter') {
-      handleSearch()
+      handleSearch(key)
     }
   }
 
@@ -332,7 +382,7 @@ const Home = () => {
                   className="location-input"
                   value={searchLocation}
                   onChange={handleLocationSearch}
-                  onKeyUp={handleSearchBox}
+                  onKeyUp={e => handleSearchBox(e, 1)}
                 />
                 <button className="location-search-btn">
                   <img
@@ -343,14 +393,20 @@ const Home = () => {
                 </button>
               </div>
               {autocompleteSuggestions.length > 0 && (
-                <div className="autocomplete-suggestions">
+                <div className="location-search-autocomplete-suggestions">
                   {autocompleteSuggestions.map((suggestion, index) => (
                     <div
                       key={index}
                       className="autocomplete-suggestion"
-                      onClick={() => handleSuggestionClick(suggestion)}
+                      onClick={() =>
+                        handleSuggestionClick(
+                          suggestion.label,
+                          1,
+                          suggestion.bbox
+                        )
+                      }
                     >
-                      {suggestion}
+                      {suggestion.label}
                     </div>
                   ))}
                 </div>
@@ -525,12 +581,27 @@ const Home = () => {
           <input
             type="text"
             placeholder="Your Location"
-            onChange={e => setStartLocation}
+            onKeyUp={handleLocationSearch}
           />
+          {autocompleteSuggestions.length > 0 && (
+            <div className="start-search-autocomplete-suggestions">
+              {autocompleteSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="autocomplete-suggestion"
+                  onClick={() =>
+                    handleSuggestionClick(suggestion.label, 2, suggestion.bbox)
+                  }
+                >
+                  {suggestion.label}
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             placeholder="Choose Destination"
-            onChange={e => setEndLocation}
+            onChange={handleLocationSearch}
           />
           <select>
             <option>Vehicle Type</option>
@@ -543,6 +614,7 @@ const Home = () => {
               longitude={location.lon}
               startLocation={startLocation}
               endLocation={endLocation}
+              ref={mapRef}
             />
           )}
           <RoutingInstructions instructions={instructions} />
