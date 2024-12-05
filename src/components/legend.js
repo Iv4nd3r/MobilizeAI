@@ -1,6 +1,6 @@
 // pages/components/legends.js
 import React from 'react'
-import './Legend.css'
+import './legend.css'
 
 const Legends = () => {
   return (
