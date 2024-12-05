@@ -1,6 +1,7 @@
+const { DefinePlugin } = require('webpack')
+const dotenv = require('dotenv')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   entry: './pages/index.js',
@@ -47,9 +48,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new Dotenv({
-      path: './.env.local',
-      safe: true
+    new DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed)
     })
   ],
   devServer: {
