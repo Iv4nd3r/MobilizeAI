@@ -11,10 +11,17 @@ export const fetchGeocodingData = async location => {
     if (!response.ok) {
       throw new Error('Failed to fetch geocoding data')
     }
+    const data = await response.json()
+    if (data.length === 0) {
+      throw new Error('Location not found')
+    }
+    return { lat: data[0].lat, lon: data[0].lon } // Return lat and lon for OpenWeather API
+  } else {
+    const data = await response.json()
+    if (data.features.length === 0) {
+      throw new Error('Location not found')
+    }
+    const coordinates = data.features[0].geometry.coordinates
+    return { lat: coordinates[1], lon: coordinates[0] } // Return lat and lon for OpenRouteService API
   }
-  const data = await response.json()
-  if (data.length === 0) {
-    throw new Error('Location not found')
-  }
-  return data[0] // Return the first result
 }
