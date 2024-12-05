@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import LandingPage from '/src/components/LandingPage';
 import Header from '/src/components/Header'; // This is your basic header (Header.js)
-import Header2 from './components/Header2'; // This is your logged-in header (Header2.js)
+import Header2 from '/src/components/Header2'; // This is your logged-in header (Header2.js)
 import Register from './Register';
 import Login from './Login';
 import Home from './Home';
