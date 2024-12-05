@@ -3,7 +3,7 @@ import './Login.css'
 import GoogleLogo from '../src/assets/google-button.svg'
 
 import { Link } from 'react-router-dom'
-import LandingPage from './components/LandingPage'
+import LandingPage from '/src/components/LandingPage'
 
 const Login = () => {
   return (

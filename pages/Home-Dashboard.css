@@ -114,7 +114,7 @@
     border: none;
     outline: none;
     background-color: transparent; /* Transparent for container style */
-    color: #EBEDEF; /* Text color */
+    color: #000000; /* Text color */
     font-size: 1rem;
     font-family: 'Nunito Sans', sans-serif;
     width: 250px; /* Adjust width as per design */

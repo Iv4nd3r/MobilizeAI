@@ -1,10 +1,16 @@
 // Geocoding.js
 export const fetchGeocodingData = async location => {
   const response = await fetch(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${process.env.OPENWEATHER_API_KEY}`
+    `https://api.openrouteservice.org/geocode/search?api_key=${process.env.OPENROUTESERVICE_API_KEY}&text=${location}`
   )
   if (!response.ok) {
-    throw new Error('Failed to fetch geocoding data')
+    console.log('Failed to fetch geocoding data, using backup geocoding')
+    response = await fetch(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${process.env.OPENWEATHER_API_KEY}`
+    )
+    if (!response.ok) {
+      throw new Error('Failed to fetch geocoding data')
+    }
   }
   const data = await response.json()
   if (data.length === 0) {

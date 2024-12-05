@@ -1,30 +1,36 @@
 // src/components/FeaturesSection.js
-import React from 'react';
-import NavigationIcon from '../assets/navigation-icon.svg';
-import DashboardIcon from '../assets/dashboard-icon.svg';
-import AITipsIcon from '../assets/ai-icon.svg';
-import EnergyHistoryIcon from '../assets/energyhistory-icon.svg';
+import React from 'react'
+import NavigationIcon from '/src/assets/navigation-icon.svg'
+import DashboardIcon from '/src/assets/dashboard-icon.svg'
+import AITipsIcon from '/src/assets/ai-icon.svg'
+import EnergyHistoryIcon from '/src/assets/energyhistory-icon.svg'
 
 const FeatureCard = ({ title, description, icon }) => (
   <div
     className="p-8 rounded-xl shadow-lg flex items-start"
     style={{
-      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
+      background:
+        'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
       backdropFilter: 'blur(20px)',
       borderRadius: '25px',
       width: '100%',
-      maxWidth: '700px',
+      maxWidth: '700px'
     }}
   >
     <div className="flex flex-col items-center mr-6 min-w-[150px]">
       <img src={icon} alt={`${title} icon`} className="w-24 h-24 mb-2" />
-      <h5 className="text-xl font-bold text-[#d4d0af] whitespace-nowrap">{title}</h5>
+      <h5 className="text-xl font-bold text-[#d4d0af] whitespace-nowrap">
+        {title}
+      </h5>
     </div>
-    <p className="text-[30px] font-extrabold text-[#DBE5F6] leading-tight" style={{ maxWidth: '362px' }}>
+    <p
+      className="text-[30px] font-extrabold text-[#DBE5F6] leading-tight"
+      style={{ maxWidth: '362px' }}
+    >
       {description}
     </p>
   </div>
-);
+)
 
 const FeaturesSection = () => {
   return (
@@ -34,7 +40,7 @@ const FeaturesSection = () => {
         style={{
           background: 'linear-gradient(90deg, #D4D0AF 27%, #EBEDEF 100%)',
           WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          WebkitTextFillColor: 'transparent'
         }}
       >
         Our key features
@@ -62,7 +68,7 @@ const FeaturesSection = () => {
         />
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default FeaturesSection;
+export default FeaturesSection

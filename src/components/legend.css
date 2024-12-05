@@ -1,0 +1,149 @@
+/* pages/components/Legend.css */
+:root {
+  --custom-text-color: #000000; /* Replace with your desired color */
+}
+
+.legend-container {
+  display: flex;
+  align-items: center;
+}
+
+.info.legend-bar {
+  display: flex;
+  flex-direction: row; /* Make the legends horizontal */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1001; /* Ensure it's above other map components */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Slightly opaque for better visibility */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--custom-text-color); /* Apply custom text color */
+}
+
+.legend-category {
+  margin-right: 10px; /* Add space between legend categories */
+}
+
+.legend-category h4 {
+  margin: 0 0 5px;
+}
+
+.legend-category p {
+  margin: 0 0 5px;
+}
+
+.color-bar {
+  display: flex;
+  height: 20px;
+  border: 1px solid #ccc;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px; /* Add space between legends and buttons */
+}
+
+.zoom-button,
+.overlays-button {
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.zoom-button:hover,
+.overlays-button:hover {
+  background-color: #0056b3;
+}
+
+.rain-legend {
+  background: linear-gradient(
+    to right,
+    rgba(225, 200, 100, 0) 0%,
+    rgba(200, 150, 150, 0) 0.1%,
+    rgba(150, 150, 170, 0) 0.2%,
+    rgba(120, 120, 190, 0) 0.5%,
+    rgba(110, 110, 205, 0.3) 1%,
+    rgba(80, 80, 225, 0.7) 10%,
+    rgba(20, 20, 225, 0.9) 140%
+  );
+}
+.snow-legend {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    #00d8ff 5%,
+    #00b6ff 10%,
+    #9549ff 25.076%
+  );
+}
+.clouds-legend {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(253, 253, 255, 0.1) 10%,
+    rgba(252, 251, 255, 0.2) 20%,
+    rgba(250, 250, 255, 0.3) 30%,
+    rgba(249, 248, 255, 0.4) 40%,
+    rgba(247, 247, 255, 0.5) 50%,
+    rgba(246, 245, 255, 0.75) 60%,
+    rgba(244, 244, 255, 1) 70%,
+    rgba(243, 242, 255, 1) 80%,
+    rgba(242, 241, 255, 1) 90%,
+    rgba(240, 240, 255, 1) 100%
+  );
+}
+.temperature-legend {
+  background: linear-gradient(
+    to right,
+    rgba(130, 22, 146, 1) -65%,
+    rgba(130, 22, 146, 1) -55%,
+    rgba(130, 22, 146, 1) -45%,
+    rgba(130, 22, 146, 1) -40%,
+    rgba(130, 87, 219, 1) -30%,
+    rgba(32, 140, 236, 1) -20%,
+    rgba(32, 196, 232, 1) -10%,
+    rgba(35, 221, 221, 1) 0%,
+    rgba(194, 255, 40, 1) 10%,
+    rgba(255, 240, 40, 1) 20%,
+    rgba(255, 194, 40, 1) 25%,
+    rgba(252, 128, 20, 1) 30%
+  );
+}
+.pressure-legend {
+  background: linear-gradient(
+    to right,
+    rgba(0, 115, 255, 1) 94000%,
+    rgba(0, 170, 255, 1) 96000%,
+    rgba(75, 208, 214, 1) 98000%,
+    rgba(141, 231, 199, 1) 100000%,
+    rgba(176, 247, 32, 1) 101000%,
+    rgba(240, 184, 0, 1) 102000%,
+    rgba(251, 85, 21, 1) 104000%,
+    rgba(243, 54, 59, 1) 106000%,
+    rgba(198, 0, 0, 1) 108000%
+  );
+}
+.wind-legend {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 1%,
+    rgba(238, 206, 206, 0.4) 5%,
+    rgba(179, 100, 188, 0.7) 15%,
+    rgba(63, 33, 59, 0.8) 25%,
+    rgba(116, 76, 172, 0.9) 50%,
+    rgba(70, 0, 175, 1) 100%,
+    rgba(13, 17, 38, 1) 200%
+  );
+}
