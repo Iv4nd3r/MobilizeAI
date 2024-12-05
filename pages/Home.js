@@ -344,14 +344,14 @@ const Home = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="wind-speed-item">
-                  <span className="value">
-                    {weatherData ? `${weatherData.wind.gust}` : '-'}
-                  </span>
-                  <span className="unit-label">
-                    <span className="unit">KM/H</span>
-                    <span className="label">Gusts</span>
-                  </span>
-                </div>
+                <span className="value">
+                  {weatherData && weatherData.wind && weatherData.wind.gust ? `${weatherData.wind.gust}` : '-'}
+                </span>
+                <span className="unit-label">
+                  <span className="unit">KM/H</span>
+                  <span className="label">Gusts</span>
+                </span>
+              </div>
               </div>
             </div>
 

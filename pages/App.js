@@ -42,8 +42,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/AboutMePage" element={<AboutMePage />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
