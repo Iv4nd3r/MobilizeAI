@@ -115,13 +115,13 @@
 }
 
 .location-input {
-  border: none;
-  outline: none;
-  background-color: transparent; /* Transparent for container style */
-  color: #000000; /* Text color */
-  font-size: 1rem;
-  font-family: 'Nunito Sans', sans-serif;
-  width: 250px; /* Adjust width as per design */
+    border: none;
+    outline: none;
+    background-color: transparent; /* Transparent for container style */
+    color: #000000; /* Text color */
+    font-size: 1rem;
+    font-family: 'Nunito Sans', sans-serif;
+    width: 250px; /* Adjust width as per design */
 }
 
 .location-search-btn {
@@ -215,6 +215,10 @@
   -webkit-text-fill-color: transparent;
 }
 
+
+
+
+
 .stat-title {
   display: flex;
   align-items: center;
@@ -235,28 +239,24 @@
 
 /* Tips Section Styling */
 .tips-section {
-  position: relative; /* Enables proper positioning within the parent */
-  display: flex; /* Enable flex layout */
-  flex-direction: column; /* Stack children vertically */
-  justify-content: flex-start; /* Stack messages at the top */
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.05)
-  );
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 20px;
-  color: #ebedef;
-  height: 100%; /* Or set a fixed height if required */
-  align-self: stretch;
+    position: relative; /* Enables proper positioning within the parent */
+    display: flex; /* Enable flex layout */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Stack messages at the top */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #EBEDEF;
+    height: 100%; /* Or set a fixed height if required */
+    align-self: stretch;
 }
 
 .tips-header {
-  display: flex;
-  justify-content: space-between; /* Space between TIPS heading and AIIcon */
-  align-items: center; /* Align vertically */
-  margin-bottom: 10px; /* Space between header and tip messages */
+    display: flex;
+    justify-content: space-between; /* Space between TIPS heading and AIIcon */
+    align-items: center; /* Align vertically */
+    margin-bottom: 10px; /* Space between header and tip messages */
 }
 
 .tips-header h3 {
@@ -305,6 +305,15 @@
   background-color: #34495e;
   color: #ebedef;
 }
+
+.tips-content {
+    flex-grow: 1; /* Allow the content to grow and take up available space */
+    overflow-y: auto; /* Enable vertical scrolling for the tips */
+    padding: 20px;
+    height: calc(100% - 100px); /* Adjust height based on header size */
+    margin-bottom: 15px; 
+}
+
 
 /* INI BAGIAN MESSAGES */
 
@@ -376,14 +385,14 @@
 }
 
 .input-container {
-  display: flex; /* Aligns input and button horizontally */
-  align-items: center; /* Vertically center-align input and button */
-  justify-content: space-between; /* Space between input and button */
-  background-color: #ebedef; /* Matches the input background */
-  border-radius: 20px; /* Rounded container */
-  padding: 10px 15px; /* Adds inner padding */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
-  margin-top: auto; /* Pushes the input-container to the bottom */
+    display: flex; /* Aligns input and button horizontally */
+    align-items: center; /* Vertically center-align input and button */
+    justify-content: space-between; /* Space between input and button */
+    background-color: #EBEDEF; /* Matches the input background */
+    border-radius: 20px; /* Rounded container */
+    padding: 10px 15px; /* Adds inner padding */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    margin-top: auto; /* Pushes the input-container to the bottom */
 }
 
 .input-box {
@@ -518,6 +527,258 @@
   margin: 0 15px; /* Space around the divider */
   margin-top: 45px;
 }
+
+/* Responsive Styles */
+
+/* General: Adjust padding and font sizes for smaller screens */
+@media (max-width: 1024px) {
+    .home-container {
+        padding: 10px;
+    }
+
+    .home-greeting h1 {
+        font-size: 2.5rem; /* Reduce font size for greeting */
+    }
+
+    .location-info h2, .location-info p, .temperature h1, .temperature p {
+        font-size: 1.5rem; /* Adjust text size for weather info */
+    }
+
+    .stat-box h4 {
+        font-size: 1.2rem; /* Smaller stat title */
+    }
+
+    .stat-box p {
+        font-size: 2.5rem !important; /* Reduce stat value font size */
+    }
+
+    .weather-stats {
+        grid-template-columns: repeat(2, 1fr); /* Adjust stats layout */
+    }
+
+    .weather-tips-container {
+        grid-template-columns: 1fr; /* Stack weather and tips */
+    }
+
+    .tips-section {
+        height: auto; /* Adjust height for smaller screens */
+    }
+
+    .tips-header h3 {
+        font-size: 2rem; /* Smaller header font */
+    }
+
+    .input-container {
+        flex-direction: column; /* Stack input and button */
+        gap: 10px;
+    }
+}
+
+/* Mobile: Stack everything vertically */
+@media (max-width: 768px) {
+    .home-greeting h1 {
+        font-size: 2rem; /* Smaller font for greeting */
+    }
+
+    .weather-info {
+        flex-direction: column; /* Stack location and temperature */
+    }
+
+    .stat-box {
+        height: auto; /* Adjust box height */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .wind-speed-item .value {
+        font-size: 2rem; /* Adjust font size for values */
+    }
+
+    .divider {
+        height: 60px; /* Shorter divider */
+    }
+
+    .location-input-container {
+        flex-direction: column; /* Stack input and button */
+        gap: 5px;
+    }
+
+    .tips-section {
+        padding: 10px; /* Reduce padding */
+        height: auto; /* Remove fixed height */
+    }
+
+    .tips-header h3 {
+        font-size: 1.5rem; /* Smaller header */
+    }
+}
+
+/* Extra Small Screens: Simplify layout and text */
+@media (max-width: 480px) {
+    .home-container {
+        padding: 5px; /* Minimal padding */
+    }
+
+    .home-greeting h1 {
+        font-size: 1.5rem; /* Compact text size */
+    }
+
+    .weather-info {
+        flex-direction: column;
+        padding: 10px; /* Reduce padding */
+    }
+
+    .weather-stats {
+        grid-template-columns: 1fr; /* One column layout */
+    }
+
+    .stat-box p {
+        font-size: 1.5rem !important; /* Smaller stats font size */
+    }
+
+    .tips-header h3 {
+        font-size: 1.2rem; /* Compact header */
+    }
+
+    .input-container {
+        gap: 5px;
+    }
+
+    .send-button {
+        width: 30px; /* Smaller button */
+        height: 30px;
+    }
+
+    .tips-section input {
+        font-size: 0.8rem; /* Compact input */
+    }
+}
+
+
+/* Responsive Styles */
+
+/* General: Adjust padding and font sizes for smaller screens */
+@media (max-width: 1024px) {
+    .home-container {
+        padding: 10px;
+    }
+
+    .home-greeting h1 {
+        font-size: 2.5rem; /* Reduce font size for greeting */
+    }
+
+    .location-info h2, .location-info p, .temperature h1, .temperature p {
+        font-size: 1.5rem; /* Adjust text size for weather info */
+    }
+
+    .stat-box h4 {
+        font-size: 1.2rem; /* Smaller stat title */
+    }
+
+    .stat-box p {
+        font-size: 2.5rem !important; /* Reduce stat value font size */
+    }
+
+    .weather-stats {
+        grid-template-columns: repeat(2, 1fr); /* Adjust stats layout */
+    }
+
+    .weather-tips-container {
+        grid-template-columns: 1fr; /* Stack weather and tips */
+    }
+
+    .tips-section {
+        height: auto; /* Adjust height for smaller screens */
+    }
+
+    .tips-header h3 {
+        font-size: 2rem; /* Smaller header font */
+    }
+
+    .input-container {
+        flex-direction: column; /* Stack input and button */
+        gap: 10px;
+    }
+}
+
+/* Mobile: Stack everything vertically */
+@media (max-width: 768px) {
+    .home-greeting h1 {
+        font-size: 2rem; /* Smaller font for greeting */
+    }
+
+    .weather-info {
+        flex-direction: column; /* Stack location and temperature */
+    }
+
+    .stat-box {
+        height: auto; /* Adjust box height */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .wind-speed-item .value {
+        font-size: 2rem; /* Adjust font size for values */
+    }
+
+    .divider {
+        height: 60px; /* Shorter divider */
+    }
+
+    .location-input-container {
+        flex-direction: column; /* Stack input and button */
+        gap: 5px;
+    }
+
+    .tips-section {
+        padding: 10px; /* Reduce padding */
+        height: auto; /* Remove fixed height */
+    }
+
+    .tips-header h3 {
+        font-size: 1.5rem; /* Smaller header */
+    }
+}
+
+/* Extra Small Screens: Simplify layout and text */
+@media (max-width: 480px) {
+    .home-container {
+        padding: 5px; /* Minimal padding */
+    }
+
+    .home-greeting h1 {
+        font-size: 1.5rem; /* Compact text size */
+    }
+
+    .weather-info {
+        flex-direction: column;
+        padding: 10px; /* Reduce padding */
+    }
+
+    .weather-stats {
+        grid-template-columns: 1fr; /* One column layout */
+    }
+
+    .stat-box p {
+        font-size: 1.5rem !important; /* Smaller stats font size */
+    }
+
+    .tips-header h3 {
+        font-size: 1.2rem; /* Compact header */
+    }
+
+    .input-container {
+        gap: 5px;
+    }
+
+    .send-button {
+        width: 30px; /* Smaller button */
+        height: 30px;
+    }
+
+    .tips-section input {
+        font-size: 0.8rem; /* Compact input */
+    }
+}
+
 
 /* Autocomplete */
 .location-search-autocomplete-suggestions {

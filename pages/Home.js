@@ -439,9 +439,7 @@ const Home = () => {
                 <div className="divider"></div>
                 <div className="wind-speed-item">
                   <span className="value">
-                    {weatherData && weatherData.wind && weatherData.wind.gust
-                      ? `${weatherData.wind.gust}`
-                      : '-'}
+                    {weatherData ? `${weatherData.wind.gust}` : '-'}
                   </span>
                   <span className="unit-label">
                     <span className="unit">KM/H</span>
