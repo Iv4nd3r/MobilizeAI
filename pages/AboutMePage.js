@@ -7,10 +7,6 @@ const AboutMePage = () => {
     const [name, setName] = useState('Ivander'); // Default name
     const [isEditing, setIsEditing] = useState(false); // To toggle edit mode
 
-    // Add state for selected month and year
-    const [selectedMonth, setSelectedMonth] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-
     // Load the name from localStorage on initial load
     useEffect(() => {
         const savedName = localStorage.getItem('userName');
@@ -37,15 +33,6 @@ const AboutMePage = () => {
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
     };
-
-    // Sample data for energy history
-    const historyData = [
-        { month: 'October', year: 2024, energy: '1,078 kWh' },
-        { month: 'September', year: 2024, energy: '5,167 kWh' },
-        { month: 'August', year: 2024, energy: '3,045 kWh' },
-        { month: 'July', year: 2024, energy: '2,300 kWh' },
-        // Add more data if needed
-    ];
 
     return (
         <div className="about-me-page">
@@ -91,30 +78,6 @@ const AboutMePage = () => {
 
                 <div className="history-section">
                     <h3>Your History</h3>
-                    <div className="dropdown-container">
-                        <select
-                            className="history-dropdown"
-                            value={selectedMonth}
-                            onChange={(e) => setSelectedMonth(e.target.value)}
-                        >
-                            <option value="">Select Month</option>
-                            {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((month, index) => (
-                                <option key={index} value={month}>{month}</option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="history-dropdown"
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(e.target.value)}
-                        >
-                            <option value="">Select Year</option>
-                            {[2024, 2023, 2022, 2021, 2020].map((year) => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
-                    </div>
-
                     <table className="history-table">
                         <thead>
                             <tr>
@@ -124,16 +87,21 @@ const AboutMePage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {historyData.filter(item => 
-                                (selectedMonth ? item.month === selectedMonth : true) &&
-                                (selectedYear ? item.year === selectedYear : true)
-                            ).map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.month}</td>
-                                    <td>{item.year}</td>
-                                    <td>{item.energy}</td>
-                                </tr>
-                            ))}
+                            <tr>
+                                <td>October</td>
+                                <td>2024</td>
+                                <td>1,078 kWh</td>
+                            </tr>
+                            <tr>
+                                <td>September</td>
+                                <td>2024</td>
+                                <td>5,167 kWh</td>
+                            </tr>
+                            <tr>
+                                <td>August</td>
+                                <td>2024</td>
+                                <td>3,045 kWh</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
