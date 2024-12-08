@@ -60,6 +60,7 @@ const Home = () => {
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
+  const [query, setQuery] = useState('')
   const [instructions, setInstructions] = useState([])
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -109,6 +110,70 @@ const Home = () => {
       setFormattedDate(formatted)
     }
   }, [weatherData])
+
+  useEffect(() => {
+    if (weatherData !== null || forecastData !== null) {
+      fetchInitialAITips(weatherData, forecastData)
+    }
+  }, [weatherData])
+
+  const fetchInitialAITips = async (currentWeather, forecastWeather) => {
+    if (!initialFetchDone) {
+      const newChatHistory = [
+        ...chatHistory,
+        { type: 'user', message: userInput },
+        { type: 'system', message: 'Generating ...' }
+      ]
+      setChatHistory(newChatHistory)
+      setUserInput('')
+      setIsGenerating(true)
+
+      try {
+        const response = await getGenerativeAITips(
+          currentWeather,
+          forecastWeather,
+          'Give a list of recommendation based on these weather condition and generate a outut like this : Based on the weather data, I recommend these actions you can do to minimize impact on our beloved Earth\n* Recommendation 1 and reasons\n* Recommendation 2 and reasons\n* Recommendation 3 and reasons\n* Recommendation x and reasons\n\nEnsure each recommendation is on a new line and properly formatted with bullet points.'
+        )
+        setChatHistory([{ type: 'system', message: response }])
+      } catch (error) {
+        console.error('Error fetching AI response:', error)
+      } finally {
+        setIsGenerating(false)
+      }
+    }
+    initialFetchDone = true
+  }
+
+  const fetchAITips = async () => {
+    if (userInput.trim() === '') return
+    const newChatHistory = [
+      ...chatHistory,
+      { type: 'user', message: userInput },
+      { type: 'system', message: 'Generating ...' }
+    ]
+    setChatHistory(newChatHistory)
+    setUserInput('')
+    setIsGenerating(true)
+
+    try {
+      const response = await getGenerativeAITips(
+        weatherData,
+        forecastData,
+        userInput
+      )
+      const updatedChatHistory = newChatHistory.filter(
+        message => message.message !== 'Generating ...'
+      )
+      setChatHistory([
+        ...updatedChatHistory,
+        { type: 'system', message: response }
+      ])
+    } catch (error) {
+      console.error('Error fetching AI response:', error)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
 
   const handleSearch = async key => {
     try {
@@ -191,70 +256,7 @@ const Home = () => {
       default:
         console.error('Invalid key value passed to handleSuggestionClick')
     }
-  }
-
-  useEffect(() => {
-    if (weatherData !== null || forecastData !== null) {
-      fetchInitialAITips(weatherData, forecastData)
-    }
-  }, [weatherData])
-
-  const fetchInitialAITips = async (currentWeather, forecastWeather) => {
-    if (!initialFetchDone) {
-      const newChatHistory = [
-        ...chatHistory,
-        { type: 'user', message: userInput },
-        { type: 'system', message: 'Generating ...' }
-      ]
-      setChatHistory(newChatHistory)
-      setUserInput('')
-      setIsGenerating(true)
-
-      try {
-        const response = await getGenerativeAITips(
-          currentWeather,
-          forecastWeather,
-          'Give a list of recommendation based on these weather condition and generate a outut like this : Based on the weather data, I recommend these actions you can do to minimize impact on our beloved Earth\n* Recommendation 1 and reasons\n* Recommendation 2 and reasons\n* Recommendation 3 and reasons\n* Recommendation x and reasons\n\nEnsure each recommendation is on a new line and properly formatted with bullet points.'
-        )
-        setChatHistory([{ type: 'system', message: response }])
-      } catch (error) {
-        console.error('Error fetching AI response:', error)
-      } finally {
-        setIsGenerating(false)
-      }
-    }
-    initialFetchDone = true
-  }
-
-  const fetchAITips = async () => {
-    if (userInput.trim() === '') return
-    const newChatHistory = [
-      ...chatHistory,
-      { type: 'user', message: userInput },
-      { type: 'system', message: 'Generating ...' }
-    ]
-    setChatHistory(newChatHistory)
-    setUserInput('')
-    setIsGenerating(true)
-
-    try {
-      const response = await getGenerativeAITips(
-        weatherData,
-        forecastData,
-        userInput
-      )
-      const updatedChatHistory = newChatHistory.filter(
-        message => message.message !== 'Generating ...'
-      )
-      setChatHistory([
-        ...updatedChatHistory,
-        { type: 'system', message: response }
-      ])
-    } catch (error) {
-      console.error('Error fetching AI response:', error)
-    } finally {
-      setIsGenerating(false)
-    }
+    setAutocompleteSuggestions([])
   }
 
   const handleChatBox = e => {
@@ -265,8 +267,17 @@ const Home = () => {
 
   const handleSearchBox = (e, key) => {
     if (e.key === 'Enter') {
-      handleSearch(key)
+      try {
+        handleLocationSearch(e)
+      } catch (error) {
+        handleSearch(key)
+      }
     }
+  }
+
+  const handleInputChange = e => {
+    setSearchLocation(e.target.value)
+    debouncedHandleLocationSearch(e)
   }
 
   const lineChartData = {
@@ -329,6 +340,18 @@ const Home = () => {
     }
   }
 
+  function debounce(func, delay) {
+    let timeoutId
+    return function (...args) {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        func.apply(this, args)
+      }, delay)
+    }
+  }
+
+  const debouncedHandleLocationSearch = debounce(handleLocationSearch, 2000)
+
   return (
     <div className="home-container">
       <LocationComponent
@@ -381,7 +404,7 @@ const Home = () => {
                   placeholder="Not the right location ?"
                   className="location-input"
                   value={searchLocation}
-                  onChange={handleLocationSearch}
+                  onChange={handleInputChange}
                   onKeyUp={e => handleSearchBox(e, 1)}
                 />
                 <button className="location-search-btn">
@@ -439,7 +462,9 @@ const Home = () => {
                 <div className="divider"></div>
                 <div className="wind-speed-item">
                   <span className="value">
-                    {weatherData ? `${weatherData.wind.gust}` : '-'}
+                    {weatherData && weatherData.wind && weatherData.wind.gust
+                      ? `${weatherData.wind.gust}`
+                      : '-'}
                   </span>
                   <span className="unit-label">
                     <span className="unit">KM/H</span>
@@ -579,7 +604,7 @@ const Home = () => {
           <input
             type="text"
             placeholder="Your Location"
-            onKeyUp={handleLocationSearch}
+            onKeyUp={e => handleSearchBox(e, 2)}
           />
           {autocompleteSuggestions.length > 0 && (
             <div className="start-search-autocomplete-suggestions">
@@ -599,7 +624,7 @@ const Home = () => {
           <input
             type="text"
             placeholder="Choose Destination"
-            onChange={handleLocationSearch}
+            onKeyUp={e => handleSearchBox(e, 3)}
           />
           <select>
             <option>Vehicle Type</option>

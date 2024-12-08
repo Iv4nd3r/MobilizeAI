@@ -33,17 +33,40 @@ const RoutingMachine = ({ start, end }) => {
   useEffect(() => {
     if (!map) return
 
-    const osrmRouter = L.Routing.osrmv1({
-      serviceUrl: 'https://router.project-osrm.org/route/v1'
-    })
+    const fetchORSRoute = async () => {
+      try {
+        const response = await fetch(
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${
+            process.env.OPENROUTESERVICE_API_KEY
+          }&start=${(start.lat, start.lon)}&end=${(end.lat, end.lon)}`
+        )
+        const coordinates = response.data.features[0].geometry.coordinates.map(
+          coord => L.latLng(coord[1], coord[0])
+        )
+        L.Routing.control({
+          waypoints: coordinates,
+          routeWhileDragging: true
+        }).addTo(map)
+      } catch (error) {
+        console.error('Error fetching ORS route:', error)
+        // Fallback to OSRM
+        const osrmRouter = L.Routing.osrmv1({
+          serviceUrl: 'https://router.project-osrm.org/route/v1'
+        })
+        L.Routing.control({
+          waypoints: [
+            L.latLng(start.lat, start.lng),
+            L.latLng(end.lat, end.lng)
+          ],
+          routeWhileDragging: true,
+          router: osrmRouter
+        }).addTo(map)
+      }
+    }
 
-    const routingControl = L.Routing.control({
-      waypoints: [L.latLng(start.lat, start.lng), L.latLng(end.lat, end.lng)],
-      routeWhileDragging: true,
-      router: osrmRouter
-    }).addTo(map)
+    fetchORSRoute()
 
-    return () => map.removeControl(routingControl)
+    return () => map
   }, [map, start, end])
 
   return null
