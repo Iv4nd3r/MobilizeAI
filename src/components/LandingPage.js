@@ -1,4 +1,3 @@
-// src/components/LandingPage.js
 import React from 'react';
 import Header from './Header';
 import WelcomeSection from './WelcomeSection';

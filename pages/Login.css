@@ -8,7 +8,6 @@
     font-family: 'Nunito Sans', sans-serif;
 }
 
-/* container mirip register.jss, biar 2 box separated rather than 1 box bagi dua */
 .login-container {
     display: flex;
     justify-content: center;
@@ -22,7 +21,6 @@
     position: relative;
   }
 
-/* ini kotak gede */
 .hello-banner {
     display: flex;
     flex-direction: column;
@@ -39,7 +37,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: absolute;
     z-index: 2;
-
     left: 40px;
 }
 
@@ -82,9 +79,6 @@
     top: -10px;
 }
 
-/* ============= batas kotak GUE PUSING ==================== */
-
-/* ini kotak kecil */
 .right-panel {
     background: radial-gradient(circle at center, #D4D0AF 0%, #90A7C4 100%);
     padding: 40px;
@@ -106,14 +100,11 @@
 
 }
 
-/* Adding margin to the form to push it down */
 .login-form {
     width: 100%;
     margin-top: 5rem; 
 }
 
-
-/* Input fields styling */
 .login-form input {
     width: 100%;
     padding: 0.8rem;
@@ -130,7 +121,6 @@
     color: #8a94a6;
 }
 
-/* Forgot password link styling */
 .forgot-password {
     color: #a0b1c5;
     font-size: 0.9rem;
@@ -142,7 +132,6 @@
     width: 100%;
 }
 
-/* Button group styling */
 .button-group {
     display: flex;
     gap: 0.5rem;
@@ -178,7 +167,6 @@
     color: white;
 }
 
-/* Google button styling */
 .google-btn {
     margin-top: 1.5rem;
     width: 100%;
@@ -195,9 +183,6 @@
     justify-content: center;
 }
 
-/* Responsive styles */
-
-/* Tablet */
 @media (max-width: 768px) {
     .login-container {
         flex-direction: column;
@@ -222,9 +207,9 @@
 
 .back-button-login {
     position: absolute;
-    top: 20px; /* Adjust as needed for positioning */
-    left: 20px; /* Adjust as needed for positioning */
-    color: #496595; /* Matches the gradient text color */
+    top: 20px;
+    left: 20px; 
+    color: #496595;
     font-size: 20px;
     
     background-color: transparent;

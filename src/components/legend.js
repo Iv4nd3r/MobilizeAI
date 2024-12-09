@@ -1,4 +1,3 @@
-// pages/components/legends.js
 import React from 'react'
 import './Legend.css'
 

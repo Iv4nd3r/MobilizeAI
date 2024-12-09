@@ -12,11 +12,8 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-routing-machine'
 import 'leaflet-providers'
-
-// Fix for default marker icon issue with Webpack
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-
 import Legend from '../../src/components/legend'
 import legendData from '../../src/components/maps-legend.json'
 

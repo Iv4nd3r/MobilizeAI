@@ -15,13 +15,13 @@ export const fetchGeocodingData = async location => {
     if (data.length === 0) {
       throw new Error('Location not found')
     }
-    return { lat: data[0].lat, lon: data[0].lon } // Return lat and lon for OpenWeather API
+    return { lat: data[0].lat, lon: data[0].lon } 
   } else {
     const data = await response.json()
     if (data.features.length === 0) {
       throw new Error('Location not found')
     }
     const coordinates = data.features[0].geometry.coordinates
-    return { lat: coordinates[1], lon: coordinates[0] } // Return lat and lon for OpenRouteService API
+    return { lat: coordinates[1], lon: coordinates[0] }
   }
 }

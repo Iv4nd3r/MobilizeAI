@@ -1,6 +1,5 @@
-/* pages/components/Legend.css */
 :root {
-  --custom-text-color: #000000; /* Replace with your desired color */
+  --custom-text-color: #000000;
 }
 
 .legend-container {
@@ -10,25 +9,25 @@
 
 .info.legend-bar {
   display: flex;
-  flex-direction: row; /* Make the legends horizontal */
+  flex-direction: row;
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 1001; /* Ensure it's above other map components */
+  z-index: 1001;
   background: rgba(
     255,
     255,
     255,
     0.9
-  ); /* Slightly opaque for better visibility */
+  );
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: var(--custom-text-color); /* Apply custom text color */
+  color: var(--custom-text-color);
 }
 
 .legend-category {
-  margin-right: 10px; /* Add space between legend categories */
+  margin-right: 10px;
 }
 
 .legend-category h4 {
@@ -48,7 +47,7 @@
 .buttons-container {
   display: flex;
   flex-direction: column;
-  margin-left: 10px; /* Add space between legends and buttons */
+  margin-left: 10px;
 }
 
 .zoom-button,

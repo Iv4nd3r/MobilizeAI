@@ -1,15 +1,14 @@
 import React from 'react';
-import logo from '/src/assets/mobilizeai-logo.svg'; // Import the logo image
-import '@fontsource/montserrat'; // Import Montserrat font
-import { Link } from 'react-router-dom'; // Import Link for routing
+import logo from '/src/assets/mobilizeai-logo.svg';
+import '@fontsource/montserrat';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 flex justify-between items-center p-6 bg-[#17202F] text-white z-50">
       <div className="flex items-center">
-        {/* Add Link to navigate to LandingPage */}
         <Link to="/">
-          <img src={logo} alt="MobilizeAI Logo" className="h-8" /> {/* Adjust height if needed */}
+          <img src={logo} alt="MobilizeAI Logo" className="h-8" />
         </Link>
       </div>
       <div className="flex space-x-4">

@@ -9,10 +9,10 @@ const model = genAI.getGenerativeModel({
 });
 
 /**
- * Summarizes a message to fit within a specified length.
- * @param {string} message - The message to summarize.
- * @param {number} maxLength - The maximum allowed length.
- * @returns {string} - A summarized message.
+ * 
+ * @param {string} message 
+ * @param {number} maxLength 
+ * @returns {string} 
  */
 async function summarizeMessage(message, maxLength) {
   if (message.length <= maxLength) {
@@ -41,8 +41,7 @@ async function getGenerativeAITips(currentData, forecastData, prompt) {
     const result = await model.generateContent(fullPrompt);
     const responseText = result.response.text();
 
-    // Summarize the response to the desired length
-    const maxLength = 300; // Adjust the max length as needed
+    const maxLength = 300; 
     const summarizedResponse = await summarizeMessage(responseText, maxLength);
     return summarizedResponse;
   } catch (error) {

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-
 import './Home-Navigation.css'
 import './Home-Dashboard.css'
 import './Home-EnergyHistory.css'
-
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
 import LocationComponent from '../src/components/locationcomponent'
@@ -32,8 +30,6 @@ ChartJS.register(
   Legend
 )
 import MapComponent from './api/maps'
-
-// Import SVG icons
 import CloudIcon from '../src/assets/CloudIcon.svg'
 import FeelsLikeIcon from '../src/assets/FeelsLikeIcon.svg'
 import HumidityIcon from '../src/assets/HumidityIcon.svg'
@@ -49,13 +45,12 @@ import SendBtn from '../src/assets/Send-button.svg'
 let initialFetchDone = false
 
 const Home = () => {
-  // State to store the user's name
   const [userName, setUserName] = useState('')
   const [weatherData, setWeatherData] = useState(null)
   const [forecastData, setForecastData] = useState(null)
   const [formattedDate, setFormattedDate] = useState('')
-  const [location, setLocation] = useState({ lat: 0, lon: 0 }) // Add state for location
-  const [searchLocation, setSearchLocation] = useState('') // Add state for search location
+  const [location, setLocation] = useState({ lat: 0, lon: 0 })
+  const [searchLocation, setSearchLocation] = useState('')
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
   const [instructions, setInstructions] = useState([])
@@ -69,7 +64,6 @@ const Home = () => {
   ])
 
   useEffect(() => {
-    // Retrieve the user's name from local storage
     const name = localStorage.getItem('userName') || 'Ivander'
     setUserName(name)
   }, [])
@@ -77,7 +71,6 @@ const Home = () => {
   useEffect(() => {
     const fetchWeather = async (lat, lon) => {
       try {
-        // Example coordinates
         const currentData = await fetchWeatherData(lat, lon, 'current')
         setWeatherData(currentData)
         const forecastData = await fetchWeatherData(lat, lon, 'forecast')
@@ -90,11 +83,11 @@ const Home = () => {
     if (location.lat !== 0 && location.lon !== 0) {
       fetchWeather(location.lat, location.lon)
     }
-  }, [location]) // Add location as a dependency
+  }, [location])
 
   useEffect(() => {
     if (weatherData && weatherData.dt) {
-      const unixTime = weatherData.dt * 1000 // Convert to milliseconds
+      const unixTime = weatherData.dt * 1000
       const date = new Date(unixTime)
       const options = {
         weekday: 'long',
@@ -205,10 +198,10 @@ const Home = () => {
       {
         label: 'Energy Usage (kWh)',
         data: [20, 21, 8, 14, 12],
-        borderColor: '#cfd8dc', // Light grayish-blue line
-        backgroundColor: 'rgba(207, 216, 220, 0.1)', // Subtle transparent fill
-        tension: 0.4, // Smooth curve
-        fill: true, // Fill area under the line
+        borderColor: '#cfd8dc',
+        backgroundColor: 'rgba(207, 216, 220, 0.1)',
+        tension: 0.4, 
+        fill: true, 
         pointBackgroundColor: '#cfd8dc',
         pointBorderColor: '#ffffff',
         pointHoverBackgroundColor: '#ffffff',
@@ -223,31 +216,31 @@ const Home = () => {
       legend: {
         display: true,
         labels: {
-          color: '#cfd8dc' // Matches line color
+          color: '#cfd8dc'
         }
       },
       title: {
         display: true,
         text: 'Energy Usage (kWh)',
-        color: '#cfd8dc' // Title color
+        color: '#cfd8dc'
       }
     },
     scales: {
       x: {
         grid: {
-          display: false // No grid lines for x-axis
+          display: false
         },
         ticks: {
-          color: '#cfd8dc' // Light grayish-blue text
+          color: '#cfd8dc'
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(207, 216, 220, 0.2)' // Subtle horizontal grid lines
+          color: 'rgba(207, 216, 220, 0.2)'
         },
         ticks: {
-          color: '#cfd8dc' // Light grayish-blue text
+          color: '#cfd8dc'
         }
       }
     }
@@ -257,10 +250,9 @@ const Home = () => {
     <div className="home-container">
       <LocationComponent
         onLocationChange={async (lat, lon) => {
-          setLocation({ lat, lon }) // Update location state
+          setLocation({ lat, lon })
         }}
       />
-      {/* Greeting Section */}
       <header className="home-greeting">
         <h1>Hello, {userName}!</h1>
         <a href="#" className="energy-history-link">
@@ -270,7 +262,6 @@ const Home = () => {
 
       <div className="weather-tips-container">
         <div className="weather-content">
-          {/* Weather Information Section */}
           <section className="weather-info">
             <div className="location-info">
               <h2>
@@ -320,7 +311,6 @@ const Home = () => {
             </div>
           </section>
 
-          {/* Weather Stats Section */}
           <div className="weather-stats">
             <div className="stat-box wind-speed-box">
               <h4 className="stat-title">
@@ -445,22 +435,17 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Tips Section */}
-
         <aside className="tips-section">
           <div className="tips-header">
             <h3>TIPS</h3>
             <img src={AIIcon} alt="AI Icon" className="ai-icon" />
           </div>
-          {/* BEDA */}
 
           {chatHistory.map((chat, index) => (
             <div key={index} className={`tip-message ${chat.type}`}>
               {chat.message}
             </div>
           ))}
-
-          {/*AMAN*/}
 
           <div className="input-container">
             <input
@@ -479,7 +464,6 @@ const Home = () => {
         </aside>
       </div>
 
-      {/* Map Section */}
       <section className="map-section">
         <div className="map-overlay">
           <input
@@ -509,20 +493,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Energy Usage Section */}
       <section className="energy-usage">
         <h2>
           Today, you’ve spent <span className="energy-highlight">12.5</span> kWh
           of energy
         </h2>
         <div className="energy-usage-container">
-          {/* Chart Section */}
           <div className="energy-chart">
-            {/* Placeholder for the energy usage chart */}
             <Line data={lineChartData} options={lineChartOptions} />
           </div>
 
-          {/* History Table Section */}
           <div className="energy-history">
             <table className="history-table">
               <thead>

@@ -1,7 +1,5 @@
-// src/index.js
-
-import '@fontsource/montserrat'; // Import Montserrat font
-import './index.css'; // Main CSS file
+import '@fontsource/montserrat';
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

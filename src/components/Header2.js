@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate
-import logo from '/src/assets/mobilizeai-logo.svg'; // Import logo
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '/src/assets/mobilizeai-logo.svg';
 
 const Header2 = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("User logged out"); // Implement logout logic
-    navigate('/'); // Redirect to the landing page after logout
+    console.log("User logged out");
+    navigate('/');
   };
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 flex justify-between items-center p-6 bg-[#17202F] text-white z-50">
         <div className="flex items-center">
-          {/* Add Link to navigate to HomePage */}
           <Link to="/home">
             <img src={logo} alt="MobilizeAI Logo" className="h-8" />
           </Link>
@@ -40,7 +39,6 @@ const Header2 = () => {
         </div>
       </header>
 
-      {/* Popup Logout */}
       {showLogoutPopup && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="relative bg-white w-[90%] max-w-[400px] p-6 rounded-lg shadow-lg">

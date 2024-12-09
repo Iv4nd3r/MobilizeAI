@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import LandingPage from '/src/components/LandingPage';
-import Header from '/src/components/Header'; // This is your basic header (Header.js)
-import Header2 from '/src/components/Header2'; // This is your logged-in header (Header2.js)
-import Register from './Register';
+import Header from '/src/components/Header'; 
+import Header2 from '/src/components/Header2'; 
+import Register from './SignUp';
 import Login from './Login';
 import Home from './Home';
 import AboutMePage from './AboutMePage';
@@ -12,30 +12,26 @@ import AboutUs from './AboutUs';
 import NotFound from './NotFound'
 import './index.css'
 
-// Conditional Header Component
 const ConditionalHeader = () => {
   const location = useLocation();
 
-  // Routes that use Header (basic header)
   const basicHeaderRoutes = ['/', '/register', '/login'];
 
-  // Routes that use Header2 (logged-in header)
   const loggedInHeaderRoutes = ['/home', '/AboutMePage', '/aboutus'];
 
   if (basicHeaderRoutes.includes(location.pathname)) {
-    return <Header />; // Render Header.js
+    return <Header />; 
   } else if (loggedInHeaderRoutes.includes(location.pathname)) {
-    return <Header2 />; // Render Header2.js
+    return <Header2 />; 
   } else {
-    return null; // No header for unmatched routes
+    return null; 
   }
 };
 
-// App component
 function App() {
   return (
     <Router>
-      <ConditionalHeader /> {/* This will render the correct header based on the route */}
+      <ConditionalHeader /> 
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />

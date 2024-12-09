@@ -1,7 +1,5 @@
-/* Import Montserrat font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
 
-/* Main page styling */
 .about-me-page {
     background-color: #17202F;
     display: flex;
@@ -10,11 +8,10 @@
     min-height: 100vh;
     margin: 0;
     padding-top: 2rem;
-    font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+    font-family: 'Montserrat', sans-serif;
     color: #EBEDEF;
 }
 
-/* Container styling */
 .about-me-container {
     background: #17202F;
     width: 80%;
@@ -25,23 +22,22 @@
     gap: 1.5rem;
 }
 
-/* Ensure the user-info container uses flex to align items horizontally */
 .user-info {
     display: flex;
-    align-items: center; /* Vertically center the content */
-    font-size: 48px; /* Increased font size */
-    font-weight: 800; /* Super Bold */
-    background: -webkit-linear-gradient(top, #D4D0AF, #EBEDEF); /* Gradient from top to bottom */
-    -webkit-background-clip: text; /* Make text take gradient */
-    color: transparent; /* Text is transparent to show gradient */
-    margin-top: 3rem; /* Add margin to avoid overlap with navbar */
+    align-items: center; 
+    font-size: 48px; 
+    font-weight: 800;
+    background: -webkit-linear-gradient(top, #D4D0AF, #EBEDEF);
+    -webkit-background-clip: text; 
+    color: transparent; 
+    margin-top: 3rem;
 }
 
 .user-info .edit-icon {
     cursor: pointer;
-    margin-left: 1rem; /* Add space between name and pencil icon */
+    margin-left: 1rem;
     font-size: 1.5rem;
-    color: #D4D0AF; /* Adjust icon color */
+    color: #D4D0AF;
 }
 
 
@@ -49,10 +45,10 @@
     background: none;
     border: none;
     color: transparent;
-    font-size: 48px; /* Increased font size */
+    font-size: 48px;
     font-weight: 800;
     -webkit-background-clip: text;
-    margin-top: 3rem; /* Adjust for input field position */
+    margin-top: 3rem;
     width: auto;
 }
 
@@ -62,7 +58,7 @@
     margin: 0;
 }
 
-/* Address section */
+/* address section */
 .address-section {
     background: #2E3B4E;
     padding: 1rem;
@@ -87,7 +83,7 @@
     text-indent: 10px;
 }
 
-/* Change Password section */
+/* change pass section */
 .change-password-section {
     display: flex;
     align-items: center;
@@ -118,7 +114,7 @@
     font-weight: bold;
 }
 
-/* History Section */
+/* history section */
 .history-section {
     background: #2E3B4E;
     border-radius: 15px;
@@ -126,24 +122,23 @@
     margin-top: 1rem;
 }
 
-/* Header Styling */
+/* header styling */
 .history-section h3 {
-    font-size: 2rem; /* Increased font size */
+    font-size: 2rem; 
     font-weight: 800;
-    background: -webkit-linear-gradient(top, #D4D0AF, #EBEDEF); /* Gradient from top to bottom */
+    background: -webkit-linear-gradient(top, #D4D0AF, #EBEDEF); 
     -webkit-background-clip: text;
     color: transparent;
     margin-bottom: 1rem;
 }
 
-/* Dropdown Container Styling */
+/* dropdown styling */
 .dropdown-container {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
-/* Dropdown Styling */
 .history-dropdown {
     background-color: #e1e0d5;
     border: none;
@@ -155,7 +150,7 @@
 }
 
 
-/* Table Styling */
+/* table styling */
 .history-table {
     width: 100%;
     border-collapse: collapse;
@@ -181,17 +176,14 @@
     border-radius: 10px;
 }
 
-/* Responsive styles */
+/* responsive styles */
 @media (max-width: 768px) {
     .history-table th, .history-table td {
         padding: 0.8rem;
     }
 }
 
-
-/* Responsive styles */
-
-/* Tablet */
+/* interface from a tablet */
 @media (max-width: 768px) {
     .about-me-container {
         width: 90%;
@@ -211,7 +203,7 @@
     }
 }
 
-/* Mobile */
+/* interface from a mobile */
 @media (max-width: 480px) {
     .user-info {
         font-size: 24px;

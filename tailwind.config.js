@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Ensures Tailwind processes all JS/TS files in src
+    "./src/**/*.{js,jsx,ts,tsx}",
    ],
   theme: {
     extend: {

@@ -17,15 +17,15 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'] // CSS loader
+        use: ['style-loader', 'css-loader', 'postcss-loader']
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: 'file-loader' // Font files loader
+        use: 'file-loader'
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack', 'url-loader'] // SVG loader
+        use: ['@svgr/webpack', 'url-loader'] 
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -56,7 +56,7 @@ module.exports = {
     static: {
       directory: path.join(__dirname, 'public')
     },
-    historyApiFallback: true, // This line is crucial for React Router to work with Webpack Dev Server
+    historyApiFallback: true,
     compress: true,
     port: 3000,
     hot: true

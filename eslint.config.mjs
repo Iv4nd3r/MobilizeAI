@@ -25,11 +25,10 @@ export default [
       },
     },
     rules: {
-      // Add any additional rules or customizations here
     },
   },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginTailwindcss.configs.recommended,
-  prettierConfig, // Add Prettier config at the end to override conflicting rules
+  prettierConfig,
 ];

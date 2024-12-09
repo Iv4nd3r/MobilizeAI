@@ -1,4 +1,3 @@
-// pages/api/weather.js
 export const fetchWeatherData = async (lat, lon, types) => {
   if (types === 'current') {
     try {

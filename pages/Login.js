@@ -1,13 +1,32 @@
-import React from 'react'
 import './Login.css'
 import GoogleLogo from '../src/assets/google-button.svg'
-
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import LandingPage from '/src/components/LandingPage'
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/login', {
+        email,
+        password,
+      });
+      setMessage(response.data.message); 
+      if (response.status === 200) {
+        navigate('/home');
+      }
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Invalid email or password.');
+    }}
+
   return (
-    // Wrapper div to apply specific styles that were previously applied globally to the body
     <div className="login-page">
       <div className="login-container">
         <div className="hello-banner">
@@ -19,16 +38,26 @@ const Login = () => {
           <p>Welcome to MobilizeAI!</p>
         </div>
         <div className="right-panel">
-          <form className="login-form">
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
+        <form className="login-form" onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-            {/* Forgot password link directly below password field */}
             <a href="#" className="forgot-password">
               Forgot Password?
             </a>
 
-            {/* Container for side-by-side Login and Sign Up buttons */}
             <div className="button-group">
               <button type="submit" className="login-btn">
                 Login
@@ -38,7 +67,6 @@ const Login = () => {
               </button>
             </div>
 
-            {/* Continue with Google button */}
             <button type="button" className="google-btn">
               <img src={GoogleLogo} alt="Google Logo" className="google-logo" />{' '}
               Continue With Google
@@ -47,7 +75,8 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 export default Login

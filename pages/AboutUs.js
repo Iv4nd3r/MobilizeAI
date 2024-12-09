@@ -30,27 +30,26 @@ const AboutUs = () => {
 
     return (
         <div className="min-h-screen bg-[#17202F] text-white px-6 md:px-16 py-12">
-            {/* Wrapper with extra padding */}
-            <div style={{ paddingTop: '120px' }}> {/* Adjust the value as needed */}
-                {/* Header Section */}
-                <div className="pt-32"> {/* Existing padding */}
+            <div style={{ paddingTop: '120px' }}> 
+                {/* header section */}
+                <div className="pt-32"> 
                     <h1
                         className="text-center text-4xl md:text-5xl font-bold mb-6"
                         style={{
                             fontFamily: "'Montserrat', sans-serif",
                             fontSize: '6rem', 
                             background: 'linear-gradient(to bottom, #D4D0AF, #EBEDEF)',
-                            WebkitBackgroundClip: 'text', // Clip gradient to text
-                            WebkitTextFillColor: 'transparent', // Transparent fill for gradient effect
-                            lineHeight: '1.5', // Adjust line height for a compact look
+                            WebkitBackgroundClip: 'text', 
+                            WebkitTextFillColor: 'transparent', 
+                            lineHeight: '1.5', 
                         }}
                     >
                         Meet the Creators
                     </h1>
                     <hr className="w-3/4 mx-auto border-t-2 border-gray-400 mt-2 mb-12" />
                 </div>
-
-                {/* Creators Section */}
+                
+                {/* creators section */}
                 <div className="flex flex-wrap justify-center gap-8 mt-12">
                     {creators.map((creator, index) => (
                         <div
@@ -58,14 +57,12 @@ const AboutUs = () => {
                             className="bg-gray-800 rounded-xl p-6 flex flex-col items-center shadow-md max-w-xs w-full"
                             style={{ fontFamily: "'Montserrat', sans-serif" }}
                         >
-                            {/* Creator Photo */}
+                            
                             <img
                                 src={creator.photo}
                                 alt={`${creator.name}'s photo`}
                                 className="w-32 h-32 rounded-full mb-4"
                             />
-
-                            {/* Creator Details */}
                             <div className="text-center">
                                 <h2 className="text-xl font-bold">{creator.name}</h2>
                                 <p className="text-sm italic text-gray-400">{creator.year}</p>

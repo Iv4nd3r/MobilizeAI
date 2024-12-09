@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './AboutMe.css';
-import { FaPen } from 'react-icons/fa'; // Pencil icon
+import { FaPen } from 'react-icons/fa'; 
 
 const AboutMePage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [name, setName] = useState('Ivander'); // Default name
-    const [isEditing, setIsEditing] = useState(false); // To toggle edit mode
+    const [name, setName] = useState('Ivander'); 
+    const [isEditing, setIsEditing] = useState(false); 
 
-    // Load the name from localStorage on initial load
+
     useEffect(() => {
         const savedName = localStorage.getItem('userName');
         if (savedName) {
@@ -15,7 +15,6 @@ const AboutMePage = () => {
         }
     }, []);
 
-    // Save the name to localStorage whenever it changes
     useEffect(() => {
         if (name !== 'Ivander') {
             localStorage.setItem('userName', name);
@@ -43,7 +42,7 @@ const AboutMePage = () => {
                             type="text"
                             value={name}
                             onChange={handleNameChange}
-                            onBlur={toggleEditMode} // Turn off edit mode when input loses focus
+                            onBlur={toggleEditMode} 
                             autoFocus
                         />
                     ) : (

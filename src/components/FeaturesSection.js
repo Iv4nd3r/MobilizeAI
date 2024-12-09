@@ -1,4 +1,3 @@
-// src/components/FeaturesSection.js
 import React from 'react'
 import NavigationIcon from '/src/assets/navigation-icon.svg'
 import DashboardIcon from '/src/assets/dashboard-icon.svg'

@@ -1,6 +1,5 @@
-/* Energy Usage Section */
 .energy-usage {
-    background: #17202A; /* Matches the overall design */
+    background: #17202A;
     border-radius: 20px;
     padding: 20px;
     color: #eaeef3;
@@ -15,12 +14,11 @@
 }
 
 .energy-highlight {
-    color: #d6e3ff; /* Highlight color */
+    color: #d6e3ff;
     font-size: 2rem;
     font-weight: 900;
 }
 
-/* Container for chart and history */
 .energy-usage-container {
     display: flex;
     justify-content: space-between;
@@ -28,11 +26,10 @@
     align-items: flex-start;
 }
 
-/* Chart Section */
 .energy-chart {
-    flex: 1; /* Take up equal space */
-    height: 300px; /* Height of the chart */
-    background: linear-gradient(180deg, #1a1f36, #283349); /* Subtle gradient */
+    flex: 1;
+    height: 300px;
+    background: linear-gradient(180deg, #1a1f36, #283349);
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -42,16 +39,14 @@
     font-size: 1rem;
 }
 
-/* History Table Section */
 .energy-history {
-    flex: 1; /* Take up equal space */
-    background: #1a1f36; /* Matches the card design */
+    flex: 1;
+    background: #1a1f36;
     border-radius: 15px;
     padding: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Table Styles */
 .history-table {
     width: 100%;
     border-collapse: collapse;
@@ -61,20 +56,20 @@
 .history-table thead th {
     text-align: left;
     padding: 10px 5px;
-    color: #d6e3ff; /* Header text color */
+    color: #d6e3ff;
     font-size: 1rem;
     font-weight: 700;
-    background: #283349; /* Header background */
-    border-radius: 10px 10px 0 0; /* Rounded top corners */
+    background: #283349;
+    border-radius: 10px 10px 0 0;
 }
 
 .history-table tbody tr {
-    background: #283349; /* Row background */
+    background: #283349; 
     border-bottom: 1px solid #34495E;
 }
 
 .history-table tbody tr:last-child {
-    border-bottom: none; /* Remove bottom border for last row */
+    border-bottom: none; 
 }
 
 .history-table td {
@@ -84,10 +79,9 @@
 }
 
 .history-table tbody tr:hover {
-    background: #3c4a5a; /* Hover effect */
+    background: #3c4a5a;
 }
 
-/* Energy Usage Container */
 .energy-usage-container {
     display: flex;
     flex-direction: row;
@@ -97,12 +91,11 @@
     margin-top: 20px;
 }
 
-/* Chart Container */
 .energy-chart {
     flex: 1;
-    min-width: 300px; /* Adjust based on your layout */
-    height: 300px;    /* Ensures the chart doesn't collapse */
-    background-color: #1a1f36; /* Matches the theme background */
+    min-width: 300px;
+    height: 300px;
+    background-color: #1a1f36; 
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -111,7 +104,6 @@
     justify-content: center;
 }
 
-/* History Table Styling */
 .energy-history {
     flex: 1;
     min-width: 300px;
@@ -147,7 +139,6 @@
     background-color: #1a1f36;
 }
 
-/* Adjust the layout for responsiveness */
 @media (max-width: 768px) {
     .energy-usage-container {
         flex-direction: column;
