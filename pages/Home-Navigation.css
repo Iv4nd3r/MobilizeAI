@@ -29,7 +29,8 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px; /* Spacing between inputs */
+  color: black;
 }
 
 .map-overlay input[type='text'],

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Home-Navigation.css'
 import './Home-Dashboard.css'
 import './Home-EnergyHistory.css'
@@ -9,6 +9,7 @@ import RoutingInstructions from '../src/components/RoutingInstructions.'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
+import autocompleteSearch from './api/autocomplete'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,7 +41,7 @@ import VisibilityIcon from '../src/assets/VisibilityIcon.svg'
 import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
-import SendBtn from '../src/assets/Send-button.svg'
+import SendBtn from '../src/assets/Send-Button.svg'
 
 let initialFetchDone = false
 
@@ -53,6 +54,8 @@ const Home = () => {
   const [searchLocation, setSearchLocation] = useState('')
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
+  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
+  const [query, setQuery] = useState('')
   const [instructions, setInstructions] = useState([])
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -62,6 +65,7 @@ const Home = () => {
       message: 'Hello, Ivander! How can I help you today?'
     }
   ])
+  const mapRef = useRef(null)
 
   useEffect(() => {
     const name = localStorage.getItem('userName') || 'Ivander'
@@ -99,22 +103,6 @@ const Home = () => {
       setFormattedDate(formatted)
     }
   }, [weatherData])
-
-  const handleSearch = async () => {
-    try {
-      const geocodingData = await fetchGeocodingData(searchLocation)
-      setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
-      fetchWeather(geocodingData.lat, geocodingData.lon)
-    } catch (error) {
-      console.error('Error fetching geocoding data:', error)
-    }
-  }
-
-  const handleLocationSearch = e => {
-    if (e.key === 'Enter') {
-      handleSearch()
-    }
-  }
 
   useEffect(() => {
     if (weatherData !== null || forecastData !== null) {
@@ -180,10 +168,109 @@ const Home = () => {
     }
   }
 
+  const handleSearch = async key => {
+    try {
+      const geocodingData = await fetchGeocodingData(searchLocation)
+      switch (key) {
+        case 1:
+          setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          fetchWeather(geocodingData.lat, geocodingData.lon)
+          break
+        case 2:
+          setStartLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          if (endLocation.lat !== 0 && endLocation.lon !== 0) {
+            fetchRoutes(mapRef.current, geocodingData, endLocation)
+          }
+          break
+        case 3:
+          setEndLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
+          if (startLocation.lat !== 0 && startLocation.lon !== 0) {
+            fetchRoutes(mapRef.current, startLocation, geocodingData)
+          }
+          break
+        default:
+          console.error('Invalid key value passed to handleSearch')
+      }
+    } catch (error) {
+      console.error('Error fetching geocoding data:', error)
+    }
+  }
+
+  const handleLocationSearch = async e => {
+    setSearchLocation(e.target.value)
+    if (e.target.value.length > 2) {
+      try {
+        const data = await autocompleteSearch(e.target.value)
+        setAutocompleteSuggestions(
+          data.features.map(feature => {
+            let bbox = feature.bbox
+            if (!bbox && feature.geometry && feature.geometry.coordinates) {
+              const [lon, lat] = feature.geometry.coordinates
+              bbox = [lon, lat, lon, lat] // Create bbox with the same coordinates
+            }
+            return {
+              label: feature.properties.label,
+              bbox: bbox
+            }
+          })
+        )
+      } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error)
+      }
+    } else {
+      setAutocompleteSuggestions([])
+    }
+  }
+
+  const handleSuggestionClick = async (suggestion, key, bbox) => {
+    let locationData
+    if (bbox && bbox.length >= 4) {
+      locationData = {
+        lat: (bbox[1] + bbox[3]) / 2,
+        lon: (bbox[0] + bbox[2]) / 2
+      }
+    } else {
+      // Fallback to geocoding data if bbox is not available
+      locationData = await fetchGeocodingData(suggestion)
+    }
+
+    switch (key) {
+      case 1:
+        setLocation(locationData)
+        fetchWeatherData(locationData.lat, locationData.lon)
+        break
+      case 2:
+        setStartLocation(location)
+        setEndLocation(locationData)
+        if (endLocation.lat !== 0 && endLocation.lon !== 0) {
+          fetchRoutes(mapRef.current, startLocation, endLocation)
+        }
+        break
+      default:
+        console.error('Invalid key value passed to handleSuggestionClick')
+    }
+    setAutocompleteSuggestions([])
+  }
+
   const handleChatBox = e => {
     if (e.key === 'Enter' && !isGenerating) {
       fetchAITips()
     }
+  }
+
+  const handleSearchBox = (e, key) => {
+    if (e.key === 'Enter') {
+      try {
+        handleLocationSearch(e)
+      } catch (error) {
+        handleSearch(key)
+      }
+    }
+  }
+
+  const handleInputChange = e => {
+    setSearchLocation(e.target.value)
+    debouncedHandleLocationSearch(e)
   }
 
   const lineChartData = {
@@ -246,6 +333,18 @@ const Home = () => {
     }
   }
 
+  function debounce(func, delay) {
+    let timeoutId
+    return function (...args) {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        func.apply(this, args)
+      }, delay)
+    }
+  }
+
+  const debouncedHandleLocationSearch = debounce(handleLocationSearch, 2000)
+
   return (
     <div className="home-container">
       <LocationComponent
@@ -296,10 +395,9 @@ const Home = () => {
                   placeholder="Not the right location ?"
                   className="location-input"
                   value={searchLocation}
-                  onChange={e => setSearchLocation(e.target.value)}
-                  onKeyUp={handleLocationSearch}
+                  onChange={handleInputChange}
+                  onKeyUp={e => handleSearchBox(e, 1)}
                 />
-
                 <button className="location-search-btn">
                   <img
                     src={SearchIcon}
@@ -308,6 +406,25 @@ const Home = () => {
                   />
                 </button>
               </div>
+              {autocompleteSuggestions.length > 0 && (
+                <div className="location-search-autocomplete-suggestions">
+                  {autocompleteSuggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="autocomplete-suggestion"
+                      onClick={() =>
+                        handleSuggestionClick(
+                          suggestion.label,
+                          1,
+                          suggestion.bbox
+                        )
+                      }
+                    >
+                      {suggestion.label}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -334,14 +451,16 @@ const Home = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="wind-speed-item">
-                <span className="value">
-                  {weatherData && weatherData.wind && weatherData.wind.gust ? `${weatherData.wind.gust}` : '-'}
-                </span>
-                <span className="unit-label">
-                  <span className="unit">KM/H</span>
-                  <span className="label">Gusts</span>
-                </span>
-              </div>
+                  <span className="value">
+                    {weatherData && weatherData.wind && weatherData.wind.gust
+                      ? `${weatherData.wind.gust}`
+                      : '-'}
+                  </span>
+                  <span className="unit-label">
+                    <span className="unit">KM/H</span>
+                    <span className="label">Gusts</span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -469,12 +588,27 @@ const Home = () => {
           <input
             type="text"
             placeholder="Your Location"
-            onChange={e => setStartLocation}
+            onKeyUp={e => handleSearchBox(e, 2)}
           />
+          {autocompleteSuggestions.length > 0 && (
+            <div className="start-search-autocomplete-suggestions">
+              {autocompleteSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="autocomplete-suggestion"
+                  onClick={() =>
+                    handleSuggestionClick(suggestion.label, 2, suggestion.bbox)
+                  }
+                >
+                  {suggestion.label}
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             placeholder="Choose Destination"
-            onChange={e => setEndLocation}
+            onKeyUp={e => handleSearchBox(e, 3)}
           />
           <select>
             <option>Vehicle Type</option>
@@ -487,6 +621,7 @@ const Home = () => {
               longitude={location.lon}
               startLocation={startLocation}
               endLocation={endLocation}
+              ref={mapRef}
             />
           )}
           <RoutingInstructions instructions={instructions} />
