@@ -15,7 +15,6 @@ import 'leaflet-providers'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import Legend from '../../src/components/legend'
-import legendData from '../../src/components/maps-legend.json'
 
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -33,9 +32,7 @@ const RoutingMachine = ({ start, end }) => {
     const fetchORSRoute = async () => {
       try {
         const response = await fetch(
-          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${
-            process.env.OPENROUTESERVICE_API_KEY
-          }&start=${(start.lat, start.lon)}&end=${(end.lat, end.lon)}`
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTESERVICE_API_KEY}&start=${start.lat},${start.lon}&end=${end.lat},${end.lon}`
         )
         const coordinates = response.data.features[0].geometry.coordinates.map(
           coord => L.latLng(coord[1], coord[0])
