@@ -32,21 +32,27 @@ const RoutingMachine = ({ start, end }) => {
     const fetchORSRoute = async () => {
       try {
         const response = await fetch(
-          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTESERVICE_API_KEY}&start=${start.lat},${start.lon}&end=${end.lat},${end.lon}`
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTESERVICE_API_KEY}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`
         )
-        const coordinates = response.data.features[0].geometry.coordinates.map(
-          coord => L.latLng(coord[1], coord[0])
-        )
-        L.Routing.control({
-          waypoints: coordinates,
-          routeWhileDragging: true
-        }).addTo(map)
+        const data = await response.json()
+        const distance = data.features[0].properties.summary.distance
+        const duration = data.features[0].properties.summary.duration
+        console.log(data)
+        const coordinates = data.features[0].geometry.coordinates.map(coord => [
+          coord[1],
+          coord[0]
+        ])
+        const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map)
+
+        // Fit the map to the polyline
+        map.fitBounds(polyline.getBounds())
       } catch (error) {
         console.error('Error fetching ORS route:', error)
         // Fallback to OSRM
         const osrmRouter = L.Routing.osrmv1({
           serviceUrl: 'https://router.project-osrm.org/route/v1'
         })
+        console.log('Using backup routing server')
         L.Routing.control({
           waypoints: [
             L.latLng(start.lat, start.lng),
@@ -58,7 +64,9 @@ const RoutingMachine = ({ start, end }) => {
       }
     }
 
-    fetchORSRoute()
+    if (start.lat !== 0 && start.lng !== 0 && end.lat !== 0 && end.lng !== 0) {
+      fetchORSRoute()
+    }
 
     return () => map
   }, [map, start, end])

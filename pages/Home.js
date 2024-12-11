@@ -111,6 +111,8 @@ const Home = () => {
   }, [weatherData])
 
   const fetchInitialAITips = async (currentWeather, forecastWeather) => {
+    const max_message_length = 100
+
     if (!initialFetchDone) {
       const newChatHistory = [
         ...chatHistory,
@@ -125,7 +127,7 @@ const Home = () => {
         const response = await getGenerativeAITips(
           currentWeather,
           forecastWeather,
-          'Give a list of recommendation based on these weather condition and generate a outut like this : Based on the weather data, I recommend these actions you can do to minimize impact on our beloved Earth\n* Recommendation 1 and reasons\n* Recommendation 2 and reasons\n* Recommendation 3 and reasons\n* Recommendation x and reasons\n\nEnsure each recommendation is on a new line and properly formatted with bullet points.'
+          `Give a short paragraph summary of recommendation based on these weather condition for maximum ${max_message_length} words.`
         )
         setChatHistory([{ type: 'system', message: response }])
       } catch (error) {
@@ -287,8 +289,8 @@ const Home = () => {
         data: [20, 21, 8, 14, 12],
         borderColor: '#cfd8dc',
         backgroundColor: 'rgba(207, 216, 220, 0.1)',
-        tension: 0.4, 
-        fill: true, 
+        tension: 0.4,
+        fill: true,
         pointBackgroundColor: '#cfd8dc',
         pointBorderColor: '#ffffff',
         pointHoverBackgroundColor: '#ffffff',
