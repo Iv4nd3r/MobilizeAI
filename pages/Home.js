@@ -4,8 +4,8 @@ import './Home-Dashboard.css'
 import './Home-EnergyHistory.css'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
-import LocationComponent from '../src/components/locationcomponent'
-import RoutingInstructions from '../src/components/RoutingInstructions.'
+import LocationComponent from '../src/components/LocationComponent'
+import RoutingInstructions from '../src/components/RoutingInstructions'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
@@ -56,6 +56,7 @@ const Home = () => {
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
   const [lock, setLock] = useState('')
+  const [vehicleType, setVehicleType] = useState('car')
   const [instructions, setInstructions] = useState([])
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -170,6 +171,20 @@ const Home = () => {
     }
   }
 
+  const fetchRoutingInstructions = async (start, end) => {
+    //const { coordinates } = await fetchRoutes(start, end)
+    //const instructions = coordinates.map(
+    //  coord => `Go to ${coord[1]}, ${coord[0]}`
+    //)
+    setInstructions(instructions)
+  }
+
+  useEffect(() => {
+    if (startLocation && endLocation) {
+      fetchRoutingInstructions(startLocation, endLocation)
+    }
+  }, [startLocation, endLocation])
+
   const handleSearch = async key => {
     try {
       const geocodingData = await fetchGeocodingData(searchLocation)
@@ -181,13 +196,13 @@ const Home = () => {
         case 2:
           setStartLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
           if (endLocation.lat !== 0 && endLocation.lon !== 0) {
-            RoutingMachine(geocodingData, endLocation)
+            RoutingMachine(geocodingData, endLocation, vehicleType)
           }
           break
         case 3:
           setEndLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
           if (startLocation.lat !== 0 && startLocation.lon !== 0) {
-            RoutingMachine(startLocation, geocodingData)
+            RoutingMachine(startLocation, geocodingData, vehicleType)
           }
           break
         default:
@@ -246,8 +261,9 @@ const Home = () => {
           setStartLocation(locationData)
           setSearchLocation([])
           if (endLocation.lat !== 0 && endLocation.lon !== 0) {
-            RoutingMachine(locationData, endLocation)
+            RoutingMachine(locationData, endLocation, vehicleType)
           }
+          break
         case 3:
           setSearchLocation([])
           setEndLocation(locationData)
@@ -258,9 +274,9 @@ const Home = () => {
             startLocation.lat === 0
           ) {
             setStartLocation(location)
-            RoutingMachine(startLocation, locationData)
+            RoutingMachine(startLocation, locationData, vehicleType)
           } else {
-            RoutingMachine(startLocation, endLocation)
+            RoutingMachine(startLocation, endLocation, vehicleType)
           }
           break
         default:
@@ -296,6 +312,12 @@ const Home = () => {
     }
   }
 
+  const handleSaveRoute = async () => {
+    const start = { lat: startLocation.lat, lon: startLocation.lon }
+    const end = { lat: endLocation.lat, lon: endLocation.lon }
+    await energyCalculate(start, end, vehicleType)
+  }
+
   const lineChartData = {
     labels: [
       'Oct 10, 2024',
@@ -323,7 +345,7 @@ const Home = () => {
   const lineChartOptions = {
     responsive: true,
     plugins: {
-      legend: {
+      Legend: {
         display: true,
         labels: {
           color: '#cfd8dc'
@@ -632,9 +654,22 @@ const Home = () => {
               ))}
             </div>
           )}
-          <select>
-            <option>Vehicle Type</option>
-          </select>
+          <div>
+            <select
+              id="vehicleType"
+              value={vehicleType}
+              onChange={e => setVehicleType(e.target.value)}
+            >
+              <option>Vehicle Type</option>
+              <option value="car">Regular Car</option>
+              <option value="ecar">Electric Car</option>
+              <option value="bike">Bike</option>
+              <option value="ebike">Electric Bike</option>
+              <option value="hgv">Bus / Truck</option>
+              <option value="walk">Walk</option>
+            </select>
+          </div>
+          <button onClick={handleSaveRoute}>Save Route</button>
         </div>
         <div className="map-placeholder">
           {location.lat !== 0 && location.lon !== 0 && (
@@ -643,6 +678,7 @@ const Home = () => {
               longitude={location.lon}
               startLocation={startLocation}
               endLocation={endLocation}
+              type={vehicleType}
               ref={mapRef}
             />
           )}

@@ -14,8 +14,10 @@ import 'leaflet-routing-machine'
 import 'leaflet-providers'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import Legend from '../../src/components/legend'
+import Legend from '../../src/components/Legend'
 import fetchRoutes from './routing'
+import energyCalculate from './energyCalculate'
+import RoutingInstructions from '../../src/components/RoutingInstructions'
 
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -24,17 +26,18 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon
 
-const RoutingMachine = ({ start, end }) => {
+const RoutingMachine = ({ start, end, type }) => {
   const map = useMap()
   const polylineRef = useRef(null)
+  const [instructions, setInstructions] = React.useState([])
 
   useEffect(() => {
     if (!map) return
 
     const fetchORSRoute = async () => {
       try {
-        const data = await fetchRoutes(start, end, 1)
-        const coordinates = data.map(coord => [coord[1], coord[0]])
+        const data = await fetchRoutes(start, end, type)
+        const coordinates = data.coordinates.map(coord => [coord[1], coord[0]])
         if (polylineRef.current) {
           map.removeLayer(polylineRef.current)
         }
@@ -43,6 +46,7 @@ const RoutingMachine = ({ start, end }) => {
         )
         // Fit the map to the polyline
         map.fitBounds(polylineRef.current.getBounds())
+        energyCalculate(data.distance, data.duration, type)
       } catch (error) {
         console.error('Error fetching ORS route:', error)
         // Fallback to OSRM
@@ -74,7 +78,13 @@ const RoutingMachine = ({ start, end }) => {
   return null
 }
 
-const MapComponent = ({ latitude, longitude, startLocation, endLocation }) => {
+const MapComponent = ({
+  latitude,
+  longitude,
+  startLocation,
+  endLocation,
+  type
+}) => {
   const mapRef = useRef()
 
   useEffect(() => {
@@ -152,6 +162,7 @@ const MapComponent = ({ latitude, longitude, startLocation, endLocation }) => {
       <RoutingMachine
         start={{ lat: startLocation.lat, lng: startLocation.lon }}
         end={{ lat: endLocation.lat, lng: endLocation.lon }}
+        type={type}
       />
     </MapContainer>
   )

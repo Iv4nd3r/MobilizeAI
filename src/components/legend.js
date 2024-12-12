@@ -1,5 +1,5 @@
 import React from 'react'
-import './legend.css'
+import './Legend.css'
 
 const Legends = () => {
   return (
