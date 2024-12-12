@@ -15,6 +15,7 @@ import 'leaflet-providers'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import Legend from '../../src/components/legend'
+import fetchRoutes from './routing'
 
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -25,27 +26,23 @@ L.Marker.prototype.options.icon = DefaultIcon
 
 const RoutingMachine = ({ start, end }) => {
   const map = useMap()
+  const polylineRef = useRef(null)
 
   useEffect(() => {
     if (!map) return
 
     const fetchORSRoute = async () => {
       try {
-        const response = await fetch(
-          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTESERVICE_API_KEY}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`
+        const data = await fetchRoutes(start, end, 1)
+        const coordinates = data.map(coord => [coord[1], coord[0]])
+        if (polylineRef.current) {
+          map.removeLayer(polylineRef.current)
+        }
+        polylineRef.current = L.polyline(coordinates, { color: 'blue' }).addTo(
+          map
         )
-        const data = await response.json()
-        const distance = data.features[0].properties.summary.distance
-        const duration = data.features[0].properties.summary.duration
-        console.log(data)
-        const coordinates = data.features[0].geometry.coordinates.map(coord => [
-          coord[1],
-          coord[0]
-        ])
-        const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map)
-
         // Fit the map to the polyline
-        map.fitBounds(polyline.getBounds())
+        map.fitBounds(polylineRef.current.getBounds())
       } catch (error) {
         console.error('Error fetching ORS route:', error)
         // Fallback to OSRM
@@ -53,6 +50,9 @@ const RoutingMachine = ({ start, end }) => {
           serviceUrl: 'https://router.project-osrm.org/route/v1'
         })
         console.log('Using backup routing server')
+        if (polylineRef.current) {
+          map.removeLayer(polylineRef.current)
+        }
         L.Routing.control({
           waypoints: [
             L.latLng(start.lat, start.lng),
@@ -157,4 +157,4 @@ const MapComponent = ({ latitude, longitude, startLocation, endLocation }) => {
   )
 }
 
-export default MapComponent
+export { MapComponent, RoutingMachine }
