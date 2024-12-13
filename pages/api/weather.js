@@ -2,7 +2,7 @@ export const fetchWeatherData = async (lat, lon, types) => {
   if (types === 'current') {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`
+        `https://server-one-clover.vercel.app/fetchCurrentWeather?lat=${lat}&lon=${lon}`
       )
       if (!response.ok) {
         throw new Error('Unable to fetch weather data, please try again')
