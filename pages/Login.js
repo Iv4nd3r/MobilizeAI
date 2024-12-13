@@ -1,30 +1,41 @@
 import './Login.css'
 import GoogleLogo from '../src/assets/google-button.svg'
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 import LandingPage from '/src/components/LandingPage'
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
+  const navigate = useNavigate()
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async e => {
+    e.preventDefault()
     try {
-      const response = await axios.post('http://localhost:3001/login', {
-        email,
-        password,
-      });
-      setMessage(response.data.message); 
+      const response = await fetch(
+        'https://server-one-clover.vercel.app/login',
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      )
+      setMessage(response.message)
       if (response.status === 200) {
-        navigate('/home');
+        navigate('/home')
       }
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Invalid email or password.');
-    }}
+      setMessage(error.response?.message || 'Invalid email or password.')
+    }
+  }
 
   return (
     <div className="login-page">
@@ -38,20 +49,20 @@ const Login = () => {
           <p>Welcome to MobilizeAI!</p>
         </div>
         <div className="right-panel">
-        <form className="login-form" onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <form className="login-form" onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
             <input
               type="password"
               placeholder="Password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
             />
 
             <a href="#" className="forgot-password">
@@ -75,8 +86,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  );
-};
-
+  )
+}
 
 export default Login

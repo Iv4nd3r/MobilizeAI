@@ -16,13 +16,19 @@ export default async function energyCalculate(distance, duration, type) {
   console.log(distance, duration, energyUsed, type)
 
   // Send the energyUsed back to mongoDB database.
-  await axios
-    .post('http://localhost:3001/api/saveEnergyUsage', {
+  await fetch('https://server-one-clover.vercel.app/api/saveEnergyUsage', {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       distance,
       duration,
       energyUsed,
       type
     })
+  })
     .then(response => {
       if (response.status === 201) {
         console.log('Energy usage saved successfully')
