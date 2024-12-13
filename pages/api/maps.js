@@ -14,7 +14,7 @@ import 'leaflet-routing-machine'
 import 'leaflet-providers'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import Legend from '/src/components/Legend'
+import Legend from '../../src/components/Legend'
 import fetchRoutes from './routing'
 import energyCalculate from './energyCalculate'
 
