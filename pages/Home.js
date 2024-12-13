@@ -5,7 +5,6 @@ import './Home-EnergyHistory.css'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
 import LocationComponent from '../src/components/LocationComponent'
-import RoutingInstructions from '../src/components/RoutingInstructions'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
@@ -57,7 +56,6 @@ const Home = () => {
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
   const [lock, setLock] = useState('')
   const [vehicleType, setVehicleType] = useState('car')
-  const [instructions, setInstructions] = useState([])
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [chatHistory, setChatHistory] = useState([
@@ -170,20 +168,6 @@ const Home = () => {
       setIsGenerating(false)
     }
   }
-
-  const fetchRoutingInstructions = async (start, end) => {
-    //const { coordinates } = await fetchRoutes(start, end)
-    //const instructions = coordinates.map(
-    //  coord => `Go to ${coord[1]}, ${coord[0]}`
-    //)
-    setInstructions(instructions)
-  }
-
-  useEffect(() => {
-    if (startLocation && endLocation) {
-      fetchRoutingInstructions(startLocation, endLocation)
-    }
-  }, [startLocation, endLocation])
 
   const handleSearch = async key => {
     try {
@@ -682,7 +666,6 @@ const Home = () => {
               ref={mapRef}
             />
           )}
-          <RoutingInstructions instructions={instructions} />
         </div>
       </section>
 
