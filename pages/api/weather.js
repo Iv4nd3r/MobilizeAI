@@ -16,7 +16,7 @@ export const fetchWeatherData = async (lat, lon, types) => {
   } else if (types === 'forecast') {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.OPENWEATHER_API_KEY}`
+        `https://server-one-clover.vercel.app/api/fetchWeatherForecast?lat=${lat}&lon=${lon}`
       )
       if (!response.ok) {
         throw new Error('Unable to fetch weather data, please try again')
