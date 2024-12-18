@@ -1,6 +1,5 @@
 async function autocompleteSearch(search) {
-  const apiKey = process.env.OPENROUTESERVICE_API_KEY
-  const url = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${process.env.OPENROUTESERVICE_API_KEY}&text=${search}`
+  const url = `https://server-one-clover.vercel.app/api/fetchAutocomplete?search=${search}`
 
   try {
     const response = await fetch(url)
