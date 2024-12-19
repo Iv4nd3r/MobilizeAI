@@ -6,6 +6,7 @@ import Cookies from 'js-cookie' // Import Cookies
 const Header2 = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false)
   const navigate = useNavigate() // Initialize navigate
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const handleLogout = () => {
     Cookies.remove('token')

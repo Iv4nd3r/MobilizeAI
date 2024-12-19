@@ -55,9 +55,15 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/AboutMePage" element={<AboutMePage />} />
-        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route
+          path="/AboutMePage"
+          element={<PrivateRoute element={<AboutMePage />} />}
+        />
+        <Route
+          path="/aboutus"
+          element={<PrivateRoute element={<AboutUs />} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
