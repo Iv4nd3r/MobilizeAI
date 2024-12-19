@@ -41,6 +41,7 @@ import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
 import SendBtn from '../src/assets/Send-Button.svg'
+import { set } from 'mongoose'
 
 let initialFetchDone = false
 
@@ -50,7 +51,9 @@ const Home = () => {
   const [forecastData, setForecastData] = useState(null)
   const [formattedDate, setFormattedDate] = useState('')
   const [location, setLocation] = useState({ lat: 0, lon: 0 })
-  const [searchLocation, setSearchLocation] = useState('')
+  const [locationInput, setLocationInput] = useState('')
+  const [startLocationInput, setStartLocationInput] = useState('')
+  const [destinationLocationInput, setDestinationLocationInput] = useState('')
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
@@ -171,19 +174,22 @@ const Home = () => {
 
   const handleSearch = async key => {
     try {
-      const geocodingData = await fetchGeocodingData(searchLocation)
+      let geocodingData
       switch (lock) {
         case 1:
+          geocodingData = await fetchGeocodingData(locationInput)
           setLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
           fetchWeatherData(geocodingData.lat, geocodingData.lon)
           break
         case 2:
+          geocodingData = await fetchGeocodingData(startLocationInput)
           setStartLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
           if (endLocation.lat !== 0 && endLocation.lon !== 0) {
             RoutingMachine(geocodingData, endLocation, vehicleType)
           }
           break
         case 3:
+          geocodingData = await fetchGeocodingData(destinationLocationInput)
           setEndLocation({ lat: geocodingData.lat, lon: geocodingData.lon })
           if (startLocation.lat !== 0 && startLocation.lon !== 0) {
             RoutingMachine(startLocation, geocodingData, vehicleType)
@@ -198,7 +204,6 @@ const Home = () => {
   }
 
   const handleLocationSearch = async e => {
-    setSearchLocation(e.target.value)
     if (e.target.value.length > 2) {
       try {
         const data = await autocompleteSearch(e.target.value)
@@ -237,19 +242,17 @@ const Home = () => {
     try {
       switch (lock) {
         case 1:
+          console.log(locationData)
           setLocation(locationData)
-          setSearchLocation([])
           fetchWeatherData(locationData.lat, locationData.lon)
           break
         case 2:
           setStartLocation(locationData)
-          setSearchLocation([])
           if (endLocation.lat !== 0 && endLocation.lon !== 0) {
             RoutingMachine(locationData, endLocation, vehicleType)
           }
           break
         case 3:
-          setSearchLocation([])
           setEndLocation(locationData)
           if (
             ((endLocation.lat !== 0 && endLocation.lon !== 0) ||
@@ -289,10 +292,27 @@ const Home = () => {
     }
   }
 
-  const handleInputChange = e => {
-    setSearchLocation(e.target.value)
-    if (e.key === 'Enter') {
-      handleLocationSearch(e)
+  const handleLocationInputChange = event => {
+    setLocationInput(event.target.value)
+    if (event.key === 'Enter') {
+      setLock(1)
+      handleLocationSearch(event)
+    }
+  }
+
+  const handleStartLocationInputChange = event => {
+    setStartLocationInput(event.target.value)
+    if (event.key === 'Enter') {
+      setLock(2)
+      handleLocationSearch(event)
+    }
+  }
+
+  const handleDestinationLocationInputChange = event => {
+    setDestinationLocationInput(event.target.value)
+    if (event.key === 'Enter') {
+      setLock(3)
+      handleLocationSearch(event)
     }
   }
 
@@ -411,8 +431,8 @@ const Home = () => {
                   type="text"
                   placeholder="Not the right location ?"
                   className="location-input"
-                  value={searchLocation}
-                  onChange={handleInputChange}
+                  value={locationInput}
+                  onChange={handleLocationInputChange}
                   onKeyUp={e => handleSearchBox(e, 1)}
                 />
                 <button className="location-search-btn">
@@ -601,6 +621,9 @@ const Home = () => {
           <input
             type="text"
             placeholder="Your Location"
+            className="start-location-input"
+            value={startLocationInput}
+            onChange={handleStartLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 2)}
           />
           {autocompleteSuggestions.length > 0 && (
@@ -621,6 +644,9 @@ const Home = () => {
           <input
             type="text"
             placeholder="Choose Destination"
+            className="destination-location-input"
+            value={destinationLocationInput}
+            onChange={handleDestinationLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 3)}
           />
           {autocompleteSuggestions.length > 0 && (
