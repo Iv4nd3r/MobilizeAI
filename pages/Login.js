@@ -32,7 +32,7 @@ const Login = () => {
       setMessage(response.message)
       const data = await response.json()
       if (response.ok) {
-        Cookies.set('token', token, { expires: 7 }) // Store token in cookies for 7 days
+        Cookies.set('token', data.token, { expires: 1 / 24 }) // Store token in cookies for 1 hour
         setIsAuthenticated(true)
         navigate('/home')
       } else {
