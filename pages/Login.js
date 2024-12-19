@@ -29,8 +29,12 @@ const Login = () => {
         }
       )
       setMessage(response.message)
-      if (response.status === 200) {
+      const data = await response.json()
+      if (response.ok) {
+        localStorage.setItem('token', data.token)
         navigate('/home')
+      } else {
+        alert(data.message)
       }
     } catch (error) {
       setMessage(error.response?.message || 'Invalid email or password.')

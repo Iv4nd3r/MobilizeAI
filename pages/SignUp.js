@@ -34,6 +34,12 @@ function Register() {
       )
       setMessage(response.message)
       setShowPopup(true)
+      const data = await response.json()
+      if (response.ok) {
+        navigate('/login')
+      } else {
+        alert(data.message)
+      }
     } catch (error) {
       console.error('Error during signup:', error)
       setMessage(error.response?.message || 'Something went wrong.')
