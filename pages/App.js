@@ -5,6 +5,7 @@ import {
   Route,
   useLocation
 } from 'react-router-dom'
+import Cookies from 'js-cookie'
 import LandingPage from '/src/components/LandingPage'
 import Header from '/src/components/Header'
 import Header2 from '/src/components/Header2'
@@ -13,7 +14,6 @@ import Login from './Login'
 import Home from './Home'
 import AboutMePage from './AboutMePage'
 import AboutUs from './AboutUs'
-
 import NotFound from './NotFound'
 import './index.css'
 
@@ -34,15 +34,15 @@ const ConditionalHeader = () => {
 }
 
 const PrivateRoute = ({ element, ...rest }) => {
-  const isAuthenticated = !!localStorage.getItem('token')
-  return isAuthenticated ? element : <Navigate to="/login" />
+  const token = Cookies.get('token')
+  return token ? element : <Navigate to="/login" />
 }
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = Cookies.get('token')
     if (token) {
       setIsAuthenticated(true)
     }

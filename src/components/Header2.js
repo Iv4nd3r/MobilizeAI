@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom' // Import Link and useNavigate
 import logo from '/src/assets/mobilizeai-logo.svg' // Import logo
+import Cookies from 'js-cookie' // Import Cookies
 
 const Header2 = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false)
   const navigate = useNavigate() // Initialize navigate
 
   const handleLogout = () => {
+    Cookies.remove('token')
+    setIsAuthenticated(false)
     console.log('User logged out') // Implement logout logic
     navigate('/') // Redirect to the landing page after logout
   }

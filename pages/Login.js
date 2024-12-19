@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import LandingPage from '/src/components/LandingPage'
+import Cookies from 'js-cookie'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -31,7 +32,8 @@ const Login = () => {
       setMessage(response.message)
       const data = await response.json()
       if (response.ok) {
-        localStorage.setItem('token', data.token)
+        Cookies.set('token', token, { expires: 7 }) // Store token in cookies for 7 days
+        setIsAuthenticated(true)
         navigate('/home')
       } else {
         alert(data.message)
