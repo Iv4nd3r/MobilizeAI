@@ -4,6 +4,7 @@ import './Home-Dashboard.css'
 import './Home-EnergyHistory.css'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
+import Cookies from 'js-cookie'
 import LocationComponent from '../src/components/LocationComponent'
 import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
@@ -64,14 +65,23 @@ const Home = () => {
   const [chatHistory, setChatHistory] = useState([
     {
       type: 'system',
-      message: 'Hello, Ivander! How can I help you today?'
+      message: `Hello, ${userName}! How can I help you today?`
     }
   ])
   const mapRef = useRef(null)
 
   useEffect(() => {
-    const name = localStorage.getItem('userName') || 'Ivander'
-    setUserName(name)
+    const token = Cookies.get('token') // Retrieve the token from cookies
+    if (token) {
+      fetchUserData(token)
+        .then(userData => {
+          console.log(userData)
+          setUserName(userData.name) // Set the user's name in the state
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error)
+        })
+    }
   }, [])
 
   useEffect(() => {
@@ -169,6 +179,30 @@ const Home = () => {
       console.error('Error fetching AI response:', error)
     } finally {
       setIsGenerating(false)
+    }
+  }
+
+  async function fetchUserData(token) {
+    try {
+      const response = await fetch(
+        'https://Server-one-clover.vercel.app/api/user',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data')
+      }
+
+      const userData = await response.json()
+      return userData
+    } catch (error) {
+      console.error('Error fetching user data:', error)
     }
   }
 
