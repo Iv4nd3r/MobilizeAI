@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation
+  useLocation,
+  Navigate
 } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import LandingPage from '/src/components/LandingPage'
