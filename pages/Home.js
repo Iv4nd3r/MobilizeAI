@@ -624,7 +624,7 @@ const Home = () => {
             className="start-location-input"
             value={startLocationInput}
             onChange={handleStartLocationInputChange}
-            onKeyUp={e => handleSearchBox(e, 2)}
+            onKeyDown={e => handleSearchBox(e, 2)}
           />
           {autocompleteSuggestions.length > 0 && (
             <div className="start-search-autocomplete-suggestions">
@@ -647,7 +647,7 @@ const Home = () => {
             className="destination-location-input"
             value={destinationLocationInput}
             onChange={handleDestinationLocationInputChange}
-            onKeyUp={e => handleSearchBox(e, 3)}
+            onKeyDown={e => handleSearchBox(e, 3)}
           />
           {autocompleteSuggestions.length > 0 && (
             <div className="end-search-autocomplete-suggestions">
