@@ -13,7 +13,7 @@ export default async function fetchRoutes(start, end, type) {
       vehicle = 'foot-walking'
     }
     const response = await fetch(
-      `https://api.openrouteservice.org/v2/directions/${vehicle}?api_key=${process.env.OPENROUTESERVICE_API_KEY}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`
+      `https://server-one-clover.vercel.app/api/fetchRoutes?vehicle=${vehicle}&startLat=${start.lat}&startLon=${start.lng}&endLat=${end.lat}&endLon=${end.lng}`
     )
     const data = await response.json()
     const distance = data.features[0].properties.summary.distance

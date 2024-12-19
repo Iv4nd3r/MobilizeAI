@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -28,7 +28,7 @@ L.Marker.prototype.options.icon = DefaultIcon
 const RoutingMachine = ({ start, end, type }) => {
   const map = useMap()
   const polylineRef = useRef(null)
-  const [instructions, setInstructions] = React.useState([])
+  const [instructions, setInstructions] = useState([])
 
   useEffect(() => {
     if (!map) return
@@ -86,6 +86,14 @@ const MapComponent = ({
 }) => {
   const mapRef = useRef()
 
+  const [overlays, setOverlays] = useState([])
+
+  useEffect(() => {
+    fetch('https://server-one-clover.vercel.app/api/fetchOverlays')
+      .then(response => response.json())
+      .then(data => setOverlays(data))
+  }, [])
+
   useEffect(() => {
     if (mapRef.current && (latitude !== 0 || longitude !== 0)) {
       mapRef.current.setView([latitude, longitude], 13)
@@ -112,36 +120,11 @@ const MapComponent = ({
             attribution="&copy; OpenStreetMap contributors"
           />
         </LayersControl.BaseLayer>
-        <LayersControl.Overlay name="Precipitation">
-          <TileLayer
-            url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
-            attribution="&copy; OpenWeatherMap"
-          />
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name="Temperature">
-          <TileLayer
-            url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
-            attribution="&copy; OpenWeatherMap"
-          />
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name="Wind Speed">
-          <TileLayer
-            url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
-            attribution="&copy; OpenWeatherMap"
-          />
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name="Clouds">
-          <TileLayer
-            url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
-            attribution="&copy; OpenWeatherMap"
-          />
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name="Sea Level Pressure">
-          <TileLayer
-            url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${process.env.OPENWEATHER_API_KEY}`}
-            attribution="&copy; OpenWeatherMap"
-          />
-        </LayersControl.Overlay>
+        {overlays.map((overlay, index) => (
+          <LayersControl.Overlay key={index} name={overlay.name}>
+            <TileLayer url={overlay.url} attribution={overlay.attribution} />
+          </LayersControl.Overlay>
+        ))}
       </LayersControl>
       <Legend />
       <Marker position={[latitude, longitude]}>

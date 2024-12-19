@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const lon = req.query.lon
 
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${process.env.OPENWEATHER_API_KEY}`
+    `https://server-one-clover.vercel.app/api/fetchAqi?lat=${lat}&lon=${lon}`
   )
 
   if (!response.ok) {

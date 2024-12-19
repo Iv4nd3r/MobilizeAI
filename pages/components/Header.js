@@ -1,7 +1,7 @@
-import React from 'react';
-import logo from '/src/assets/mobilizeai-logo.svg';
-import '@fontsource/montserrat';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import logo from '/src/assets/mobilizeai-logo.svg'
+import '@fontsource/montserrat'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -30,7 +30,7 @@ const Header = () => {
         </Link>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
