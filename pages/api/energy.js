@@ -77,7 +77,8 @@ function getCalculation(temperature, humidity) {
   return calculation
 }
 
-async function energySave(users) {
+async function energySave(email) {
+  console.log(email)
   await fetch('https://server-one-clover.vercel.app/api/saveEnergyUsage', {
     method: 'POST',
     mode: 'cors',
@@ -89,7 +90,7 @@ async function energySave(users) {
       durationInH,
       calculation,
       vehicle,
-      users
+      email
     })
   })
     .then(response => {

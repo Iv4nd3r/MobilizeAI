@@ -78,7 +78,7 @@ const Home = () => {
       fetchUserData(token)
         .then(userData => {
           setUserName(userData.name) // Set the user's name in the state
-          setUserMail(userData.mail) // Set the user's mail in the state
+          setUserMail(userData.email) // Set the user's mail in the state
         })
         .catch(error => {
           console.error('Error fetching user data:', error)
@@ -278,7 +278,6 @@ const Home = () => {
     try {
       switch (lock) {
         case 1:
-          console.log(locationData)
           setLocation(locationData)
           fetchWeatherData(locationData.lat, locationData.lon)
           break
@@ -353,9 +352,6 @@ const Home = () => {
   }
 
   const handleSaveRoute = async () => {
-    console.log(
-      getCalculation(weatherData.main.temp, weatherData.main.humidity)
-    )
     energySave(userMail)
   }
 
