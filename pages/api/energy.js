@@ -105,4 +105,28 @@ async function energySave(email) {
     })
 }
 
-export { energyCalculate, energySave, getCalculation }
+async function fetchEnergyData(token) {
+  try {
+    const response = await fetch(
+      'https://server-one-clover.vercel.app/api/getEnergyUsage',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch energy data')
+    }
+
+    const energyData = await response.json()
+    return energyData
+  } catch (error) {
+    console.error('Error fetching energy data:', error)
+  }
+}
+
+export { energyCalculate, energySave, getCalculation, fetchEnergyData }

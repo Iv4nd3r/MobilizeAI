@@ -10,7 +10,8 @@ import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
 import autocompleteSearch from './api/autocomplete'
-import { energySave, getCalculation } from './api/energy'
+import { energySave, getCalculation, fetchEnergyData } from './api/energy'
+import { fetchUserData } from './api/user'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -43,7 +44,6 @@ import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
 import SendBtn from '../src/assets/Send-Button.svg'
-import { set } from 'mongoose'
 
 let initialFetchDone = false
 
@@ -64,12 +64,30 @@ const Home = () => {
   const [vehicleType, setVehicleType] = useState('car')
   const [userInput, setUserInput] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const [energyToday, setEnergyToday] = useState('')
   const [chatHistory, setChatHistory] = useState([
     {
       type: 'system',
       message: `Hello! How can I help you today?`
     }
   ])
+  const [lineChartData, setLineChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Energy Usage (kWh)',
+        data: [],
+        borderColor: '#cfd8dc',
+        backgroundColor: 'rgba(207, 216, 220, 0.1)',
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#cfd8dc',
+        pointBorderColor: '#ffffff',
+        pointHoverBackgroundColor: '#ffffff',
+        pointHoverBorderColor: '#cfd8dc'
+      }
+    ]
+  })
   const mapRef = useRef(null)
 
   useEffect(() => {
@@ -83,6 +101,7 @@ const Home = () => {
         .catch(error => {
           console.error('Error fetching user data:', error)
         })
+      loadEnergyData(token)
     }
   }, [])
 
@@ -184,28 +203,40 @@ const Home = () => {
     }
   }
 
-  async function fetchUserData(token) {
-    try {
-      const response = await fetch(
-        'https://Server-one-clover.vercel.app/api/user',
+  async function loadEnergyData(token) {
+    const energyData = await fetchEnergyData(token)
+    const today = new Date().toLocaleDateString()
+
+    // Filter energy data for today
+    const todayEnergyData = energyData.filter(
+      entry => new Date(entry.createdAt).toLocaleDateString() === today
+    )
+
+    // Calculate total energy used today
+    const totalEnergyUsedToday = todayEnergyData
+      .reduce((total, entry) => total + entry.energyUsed, 0)
+      .toFixed(1)
+
+    const labels = energyData.map(entry =>
+      new Date(entry.createdAt).toLocaleDateString()
+    )
+    const data = energyData.map(entry => entry.energyUsed)
+
+    setLineChartData({
+      labels,
+      datasets: [
         {
-          method: 'GET',
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json'
-          }
+          label: 'Energy Usage (kWh)',
+          data,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)'
         }
-      )
+      ]
+    })
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data')
-      }
-
-      const userData = await response.json()
-      return userData
-    } catch (error) {
-      console.error('Error fetching user data:', error)
-    }
+    // Display total energy used today
+    console.log(`You have consumed ${totalEnergyUsedToday} kWh today`)
+    setEnergyToday(totalEnergyUsedToday)
   }
 
   const handleSearch = async key => {
@@ -352,31 +383,9 @@ const Home = () => {
   }
 
   const handleSaveRoute = async () => {
+    getCalculation(weatherData.main.temp, weatherData.main.humidity)
     energySave(userMail)
-  }
-
-  const lineChartData = {
-    labels: [
-      'Oct 10, 2024',
-      'Oct 12, 2024',
-      'Oct 13, 2024',
-      'Oct 14, 2024',
-      'Oct 15, 2024'
-    ],
-    datasets: [
-      {
-        label: 'Energy Usage (kWh)',
-        data: [20, 21, 8, 14, 12],
-        borderColor: '#cfd8dc',
-        backgroundColor: 'rgba(207, 216, 220, 0.1)',
-        tension: 0.4,
-        fill: true,
-        pointBackgroundColor: '#cfd8dc',
-        pointBorderColor: '#ffffff',
-        pointHoverBackgroundColor: '#ffffff',
-        pointHoverBorderColor: '#cfd8dc'
-      }
-    ]
+    loadEnergyData(token)
   }
 
   const lineChartOptions = {
@@ -730,8 +739,8 @@ const Home = () => {
 
       <section className="energy-usage">
         <h2>
-          Today, you’ve spent <span className="energy-highlight">12.5</span> kWh
-          of energy
+          Today, you’ve spent{' '}
+          <span className="energy-highlight">{energyToday}</span> kWh of energy
         </h2>
         <div className="energy-usage-container">
           <div className="energy-chart">
@@ -747,26 +756,12 @@ const Home = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Oct 15, 2024</td>
-                  <td>12.5 kWh</td>
-                </tr>
-                <tr>
-                  <td>Oct 14, 2024</td>
-                  <td>13.4 kWh</td>
-                </tr>
-                <tr>
-                  <td>Oct 13, 2024</td>
-                  <td>10.2 kWh</td>
-                </tr>
-                <tr>
-                  <td>Oct 12, 2024</td>
-                  <td>20.5 kWh</td>
-                </tr>
-                <tr>
-                  <td>Oct 10, 2024</td>
-                  <td>20.3 kWh</td>
-                </tr>
+                {lineChartData.labels.map((label, index) => (
+                  <tr key={index}>
+                    <td>{label}</td>
+                    <td>{lineChartData.datasets[0].data[index]} kWh</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
