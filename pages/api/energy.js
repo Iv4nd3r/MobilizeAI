@@ -20,7 +20,6 @@ async function energyCalculate(distance, duration, type) {
   vehicle = type
   const energyUsage = energyUsageInKWhperKm[type] || 0.2
   calculation = distanceInKm * energyUsage * durationInH
-  console.log('Temporary energy usage :', calculation)
   return calculation
 }
 
@@ -68,17 +67,10 @@ function getCalculation(temperature, humidity) {
 
   calculation = calculation * temperatureCoefficient * humidityCoefficient
   calculation.toFixed(2)
-  console.log(
-    'Final energy usage :',
-    calculation,
-    temperatureCoefficient,
-    humidityCoefficient
-  )
   return calculation
 }
 
 async function energySave(email) {
-  console.log(email)
   await fetch('https://server-one-clover.vercel.app/api/saveEnergyUsage', {
     method: 'POST',
     mode: 'cors',

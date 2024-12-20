@@ -235,7 +235,6 @@ const Home = () => {
     })
 
     // Display total energy used today
-    console.log(`You have consumed ${totalEnergyUsedToday} kWh today`)
     setEnergyToday(totalEnergyUsedToday)
   }
 
