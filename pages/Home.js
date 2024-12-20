@@ -67,7 +67,7 @@ const Home = () => {
   const [chatHistory, setChatHistory] = useState([
     {
       type: 'system',
-      message: `Hello, ${userName}! How can I help you today?`
+      message: `Hello! How can I help you today?`
     }
   ])
   const mapRef = useRef(null)
