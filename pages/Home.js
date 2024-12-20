@@ -10,6 +10,7 @@ import { fetchWeatherData } from './api/weather'
 import { fetchGeocodingData } from './api/geocoding'
 import { getGenerativeAITips } from './api/ai'
 import autocompleteSearch from './api/autocomplete'
+import { energySave, getCalculation } from './api/energy'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -48,6 +49,7 @@ let initialFetchDone = false
 
 const Home = () => {
   const [userName, setUserName] = useState('')
+  const [userMail, setUserMail] = useState('')
   const [weatherData, setWeatherData] = useState(null)
   const [forecastData, setForecastData] = useState(null)
   const [formattedDate, setFormattedDate] = useState('')
@@ -75,8 +77,8 @@ const Home = () => {
     if (token) {
       fetchUserData(token)
         .then(userData => {
-          console.log(userData)
           setUserName(userData.name) // Set the user's name in the state
+          setUserMail(userData.mail) // Set the user's mail in the state
         })
         .catch(error => {
           console.error('Error fetching user data:', error)
@@ -351,9 +353,10 @@ const Home = () => {
   }
 
   const handleSaveRoute = async () => {
-    const start = { lat: startLocation.lat, lon: startLocation.lon }
-    const end = { lat: endLocation.lat, lon: endLocation.lon }
-    await energyCalculate(start, end, vehicleType)
+    console.log(
+      getCalculation(weatherData.main.temp, weatherData.main.humidity)
+    )
+    energySave(userMail)
   }
 
   const lineChartData = {
@@ -709,7 +712,7 @@ const Home = () => {
               <option value="ecar">Electric Car</option>
               <option value="bike">Bike</option>
               <option value="ebike">Electric Bike</option>
-              <option value="hgv">Bus / Truck</option>
+              <option value="hgv">Truck (HGV) </option>
               <option value="walk">Walk</option>
             </select>
           </div>

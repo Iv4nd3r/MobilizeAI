@@ -16,7 +16,7 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import Legend from '../../src/components/Legend'
 import fetchRoutes from './routing'
-import energyCalculate from './energyCalculate'
+import { energyCalculate } from './energy'
 
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
