@@ -117,7 +117,7 @@ const MapComponent = ({
         <LayersControl.BaseLayer checked name="OpenStreetMap">
           <TileLayer
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
+            attribution="&copy; OpenStreetMap contributors, &copy; OpenRouteService"
           />
         </LayersControl.BaseLayer>
         {overlays.map((overlay, index) => (

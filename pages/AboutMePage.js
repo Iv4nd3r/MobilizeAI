@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import './AboutMe.css'
 import { FaPen } from 'react-icons/fa'
 import { fetchEnergyData } from './api/energy'
-import { fetchUserData, changeUserName, saveHome, saveWork } from './api/user'
+import {
+  fetchUserData,
+  changeUserName,
+  changePass,
+  saveHome,
+  saveWork
+} from './api/user'
 import autocompleteSearch from './api/autocomplete'
 import Cookies from 'js-cookie'
 
@@ -15,6 +21,7 @@ const AboutMePage = () => {
   const [locationInputHome, setLocationInputHome] = useState('')
   const [locationInputWork, setLocationInputWork] = useState('')
   const [lock, setLock] = useState('')
+  const [temPass, setTemPass] = useState('')
   const [lineChartData, setLineChartData] = useState({
     labels: [],
     datasets: [
@@ -104,6 +111,19 @@ const AboutMePage = () => {
     if (e.key === 'Enter') {
       handleLocationSearch(e)
     }
+  }
+
+  const handleChangePass = e => {
+    setTemPass(e.target.value)
+    if (e.key === 'Enter') {
+      const token = Cookies.get('token') // Retrieve the token from cookies
+      changePass(token, temPass)
+    }
+  }
+
+  const handleChangePassBtn = () => {
+    const token = Cookies.get('token') // Retrieve the token from cookies
+    changePass(token, temPass)
   }
 
   const handleLocationSearch = async e => {
@@ -246,10 +266,19 @@ const AboutMePage = () => {
         <div className="change-password-section">
           <input
             className="change-password-input"
-            type="password"
+            type={passwordVisible ? 'text' : 'password'}
             placeholder="Change Password"
+            onChange={handleChangePass}
+            onKeyUp={handleChangePass}
           />
-          <button className="button" onClick={togglePasswordVisibility}>
+          <button
+            type="button"
+            className="toggle-password-btn"
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          >
+            {passwordVisible ? 'Hide Password' : 'Show Password'}
+          </button>
+          <button className="button" onClick={handleChangePassBtn}>
             Change Password
           </button>
         </div>

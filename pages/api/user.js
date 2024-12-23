@@ -89,6 +89,31 @@ async function changeUserName(token, newName) {
   }
 }
 
+async function changePass(token, newPwd) {
+  try {
+    const response = await fetch(
+      'https://server-one-clover.vercel.app/api/changePwd',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`
+        },
+        body: JSON.stringify({ newPwd })
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to change password')
+    }
+
+    const data = await response.json()
+    alert(data.message)
+  } catch (error) {
+    console.error('Error changing password:', error)
+  }
+}
+
 async function saveHome(token, homeAddress) {
   try {
     const response = await fetch(
@@ -144,6 +169,7 @@ export {
   userLogIn,
   fetchUserData,
   changeUserName,
+  changePass,
   saveHome,
   saveWork
 }

@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom' // Import Link and useNavigate
 import logo from '/src/assets/mobilizeai-logo.svg' // Import logo
 import Cookies from 'js-cookie' // Import Cookies
+import { fetchUserData } from '../../pages/api/user'
 
 const Header2 = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false)
   const navigate = useNavigate() // Initialize navigate
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [initial, setInitial] = useState('')
 
   const handleLogout = () => {
     Cookies.remove('token')
@@ -14,6 +16,21 @@ const Header2 = () => {
     console.log('User logged out') // Implement logout logic
     navigate('/') // Redirect to the landing page after logout
   }
+
+  useEffect(() => {
+    const token = Cookies.get('token') // Retrieve the token from cookies
+    let username
+    if (token) {
+      fetchUserData(token)
+        .then(userData => {
+          username = userData.name // Set the user's name
+          setInitial(username.charAt(0))
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error)
+        })
+    }
+  }, [])
 
   return (
     <>
@@ -37,7 +54,7 @@ const Header2 = () => {
           </button>
           <Link to="/AboutMePage">
             <div className="w-10 h-10 rounded-full bg-gray-500 flex justify-center items-center cursor-pointer">
-              <span className="text-white font-bold">U</span>
+              <span className="text-white font-bold">{initial}</span>
             </div>
           </Link>
         </div>
