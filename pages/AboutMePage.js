@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import './AboutMe.css'
 import { FaPen } from 'react-icons/fa'
-import { loadEnergyData } from './Home'
-import { fetchUserData } from './api/user'
+import { fetchEnergyData } from './api/energy'
+import { fetchUserData, changeUserName, saveHome, saveWork } from './api/user'
+import autocompleteSearch from './api/autocomplete'
 import Cookies from 'js-cookie'
 
 const AboutMePage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false)
-  const [name, setName] = useState('')
-  const [mail, setMail] = useState('')
+  const [username, setUserName] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
+  const [location, setLocation] = useState('')
+  const [locationInputHome, setLocationInputHome] = useState('')
+  const [locationInputWork, setLocationInputWork] = useState('')
+  const [lock, setLock] = useState('')
   const [lineChartData, setLineChartData] = useState({
     labels: [],
     datasets: [
@@ -33,7 +38,15 @@ const AboutMePage = () => {
     if (token) {
       fetchUserData(token)
         .then(userData => {
-          setName(userData.name) // Set the user's name in the state
+          setUserName(userData.name) // Set the user's name in the state
+          if (userData.homeAdd.length > 0) {
+            setLocationInputHome(userData.homeAdd)
+          }
+          if (userData.workAdd.length > 0) {
+            setLocationInputWork(userData.workAdd)
+          } else {
+            console.log('No work / home location set')
+          }
         })
         .catch(error => {
           console.error('Error fetching user data:', error)
@@ -43,7 +56,7 @@ const AboutMePage = () => {
   }, [])
 
   const fetchEnergy = async token => {
-    const energyData = await loadEnergyData(token)
+    const energyData = await fetchEnergyData(token)
 
     const labels = energyData.map(entry =>
       new Date(entry.createdAt).toLocaleDateString()
@@ -67,12 +80,87 @@ const AboutMePage = () => {
     setPasswordVisible(!passwordVisible)
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
   const toggleEditMode = () => {
     setIsEditing(!isEditing)
+  }
+
+  const handleNameChange = e => {
+    setUserName(e.target.value)
+    if (e.key === 'Enter') {
+      const token = Cookies.get('token') // Retrieve the token from cookies
+      changeUserName(token, username)
+    }
+  }
+
+  const handleHomeLocationChange = e => {
+    setLocationInputHome(e.target.value)
+    if (e.key === 'Enter') {
+      handleLocationSearch(e)
+    }
+  }
+
+  const handleWorkLocationChange = e => {
+    setLocationInputWork(e.target.value)
+    if (e.key === 'Enter') {
+      handleLocationSearch(e)
+    }
+  }
+
+  const handleLocationSearch = async e => {
+    if (e.target.value.length > 2) {
+      try {
+        const data = await autocompleteSearch(e.target.value)
+        setAutocompleteSuggestions(
+          data.features.map(feature => {
+            return {
+              label: feature.properties.label
+            }
+          })
+        )
+      } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error)
+      }
+    } else {
+      setAutocompleteSuggestions([])
+    }
+  }
+
+  const handleSearchBox = (e, pass) => {
+    if (e.key === 'Enter') {
+      setLock(pass)
+      handleLocationSearch(e)
+    }
+  }
+
+  const handleSuggestionClick = async suggestion => {
+    try {
+      switch (lock) {
+        case 1:
+          setLocation(suggestion)
+          setLocationInputHome(suggestion)
+          break
+        case 2:
+          setLocation(suggestion)
+          setLocationInputWork(suggestion)
+          break
+        default:
+          console.error('Invalid key value passed to handleSuggestionClick')
+      }
+    } catch (error) {
+      console.error('Error fetching geocoding data:', error)
+    }
+    setAutocompleteSuggestions([])
+  }
+
+  const saveLocation = async () => {
+    const token = Cookies.get('token') // Retrieve the token from cookies
+    if (lock === 1) {
+      saveHome(token, location)
+    } else if (lock === 2) {
+      saveWork(token, location)
+    } else {
+      console.error('Error on saving location')
+    }
   }
 
   return (
@@ -82,14 +170,15 @@ const AboutMePage = () => {
           {isEditing ? (
             <input
               type="text"
-              value={name}
+              value={username}
               onChange={handleNameChange}
+              onKeyUp={handleNameChange}
               onBlur={toggleEditMode}
               autoFocus
             />
           ) : (
             <>
-              <h2>{name}</h2>
+              <h2>{username}</h2>
               <FaPen className="edit-icon" onClick={toggleEditMode} />
             </>
           )}
@@ -102,11 +191,25 @@ const AboutMePage = () => {
             className="address-input"
             type="text"
             placeholder="Enter Home Address"
+            value={locationInputHome}
+            onChange={handleHomeLocationChange}
+            onKeyUp={e => handleSearchBox(e, 1)}
           />
-          <button
-            className="change-password-button"
-            onClick={togglePasswordVisibility}
-          >
+          {autocompleteSuggestions.length > 0 &&
+            locationInputHome.length > 0 && (
+              <div className="home-search-autocomplete-suggestions">
+                {autocompleteSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="autocomplete-suggestion"
+                    onClick={() => handleSuggestionClick(suggestion.label)}
+                  >
+                    {suggestion.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          <button className="button" onClick={saveLocation}>
             Save Home Address
           </button>
         </div>
@@ -117,11 +220,25 @@ const AboutMePage = () => {
             className="address-input"
             type="text"
             placeholder="Enter Work Address"
+            value={locationInputWork}
+            onChange={handleWorkLocationChange}
+            onKeyUp={e => handleSearchBox(e, 2)}
           />
-          <button
-            className="change-password-button"
-            onClick={togglePasswordVisibility}
-          >
+          {autocompleteSuggestions.length > 0 &&
+            locationInputWork.length > 0 && (
+              <div className="work-search-autocomplete-suggestions">
+                {autocompleteSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="autocomplete-suggestion"
+                    onClick={() => handleSuggestionClick(suggestion.label)}
+                  >
+                    {suggestion.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          <button className="button" onClick={saveLocation}>
             Save Work Address
           </button>
         </div>
@@ -132,10 +249,7 @@ const AboutMePage = () => {
             type="password"
             placeholder="Change Password"
           />
-          <button
-            className="change-password-button"
-            onClick={togglePasswordVisibility}
-          >
+          <button className="button" onClick={togglePasswordVisibility}>
             Change Password
           </button>
         </div>

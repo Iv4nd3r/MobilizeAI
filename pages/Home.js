@@ -204,7 +204,7 @@ const Home = () => {
   }
 
   const fetchEnergy = async token => {
-    const energyData = await loadEnergyData(token)
+    const energyData = await fetchEnergyData(token)
     const today = new Date().toLocaleDateString()
 
     // Filter energy data for today
@@ -484,21 +484,25 @@ const Home = () => {
                   />
                 </button>
               </div>
-              {autocompleteSuggestions.length > 0 && (
-                <div className="location-search-autocomplete-suggestions">
-                  {autocompleteSuggestions.map((suggestion, index) => (
-                    <div
-                      key={index}
-                      className="autocomplete-suggestion"
-                      onClick={() =>
-                        handleSuggestionClick(suggestion.label, suggestion.bbox)
-                      }
-                    >
-                      {suggestion.label}
-                    </div>
-                  ))}
-                </div>
-              )}
+              {autocompleteSuggestions.length > 0 &&
+                locationInput.length > 0 && (
+                  <div className="location-search-autocomplete-suggestions">
+                    {autocompleteSuggestions.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        className="autocomplete-suggestion"
+                        onClick={() =>
+                          handleSuggestionClick(
+                            suggestion.label,
+                            suggestion.bbox
+                          )
+                        }
+                      >
+                        {suggestion.label}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           </section>
 
@@ -667,21 +671,22 @@ const Home = () => {
             onChange={handleStartLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 2)}
           />
-          {autocompleteSuggestions.length > 0 && (
-            <div className="start-search-autocomplete-suggestions">
-              {autocompleteSuggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="autocomplete-suggestion"
-                  onClick={() =>
-                    handleSuggestionClick(suggestion.label, suggestion.bbox)
-                  }
-                >
-                  {suggestion.label}
-                </div>
-              ))}
-            </div>
-          )}
+          {autocompleteSuggestions.length > 0 &&
+            startLocationInput.length > 0 && (
+              <div className="start-search-autocomplete-suggestions">
+                {autocompleteSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="autocomplete-suggestion"
+                    onClick={() =>
+                      handleSuggestionClick(suggestion.label, suggestion.bbox)
+                    }
+                  >
+                    {suggestion.label}
+                  </div>
+                ))}
+              </div>
+            )}
           <input
             type="text"
             placeholder="Choose Destination"
@@ -690,21 +695,22 @@ const Home = () => {
             onChange={handleDestinationLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 3)}
           />
-          {autocompleteSuggestions.length > 0 && (
-            <div className="end-search-autocomplete-suggestions">
-              {autocompleteSuggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="autocomplete-suggestion"
-                  onClick={() =>
-                    handleSuggestionClick(suggestion.label, suggestion.bbox)
-                  }
-                >
-                  {suggestion.label}
-                </div>
-              ))}
-            </div>
-          )}
+          {autocompleteSuggestions.length > 0 &&
+            destinationLocationInput.length > 0 && (
+              <div className="end-search-autocomplete-suggestions">
+                {autocompleteSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="autocomplete-suggestion"
+                    onClick={() =>
+                      handleSuggestionClick(suggestion.label, suggestion.bbox)
+                    }
+                  >
+                    {suggestion.label}
+                  </div>
+                ))}
+              </div>
+            )}
           <div>
             <select
               id="vehicleType"
@@ -770,9 +776,4 @@ const Home = () => {
   )
 }
 
-async function loadEnergyData(token) {
-  const energyData = await fetchEnergyData(token)
-  return energyData
-}
-
-export { Home, loadEnergyData }
+export default Home

@@ -89,11 +89,11 @@ async function energySave(email) {
       if (response.status === 201) {
         console.log('Energy usage saved successfully')
       } else {
-        console.log('Failed to save energy usage')
+        console.error('Failed to save energy usage')
       }
     })
     .catch(error => {
-      console.log('Error occurred while saving energy usage:', error.message)
+      console.error('Error occurred while saving energy usage:', error.message)
     })
 }
 
