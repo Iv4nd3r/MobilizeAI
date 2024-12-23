@@ -13,6 +13,7 @@ function Register() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [showPopup, setShowPopup] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useState(false)
   const navigate = useNavigate()
 
   const handleSignUp = async e => {
@@ -74,12 +75,21 @@ function Register() {
             onChange={e => setEmail(e.target.value)}
           />
           <input
-            type="password"
+            type={passwordVisible ? 'text' : 'password'}
             placeholder="Password"
             className="input-field"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
+          <div className="password-container">
+            <button
+              type="button"
+              className="toggle-password-btn"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ? 'Hide Password' : 'Show Password'}
+            </button>
+          </div>
           <button
             className="sign-up-button"
             type="button"

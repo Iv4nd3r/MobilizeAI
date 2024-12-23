@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom'
 const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 flex justify-between items-center p-6 bg-[#17202F] text-white z-50">
-      <div className="flex items-center">
-        <img src={logo} alt="MobilizeAI Logo" className="h-8" />{' '}
-      </div>
+      <Link to="/">
+        <div className="flex items-center">
+          <img src={logo} alt="MobilizeAI Logo" className="h-8" />{' '}
+        </div>
+      </Link>
       <div className="flex space-x-4">
         <Link to="/register">
           <button

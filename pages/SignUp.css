@@ -1,5 +1,5 @@
 .register-page {
-  background-color: #17202F;
+  background-color: #17202f;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  
+
   flex-grow: 1;
   padding: 40px;
   gap: 20px;
@@ -20,7 +20,7 @@
 }
 
 .register-form {
-  background-color: #EBEDEF;
+  background-color: #ebedef;
   padding: 40px;
   border-radius: 20px;
   width: 60%;
@@ -90,7 +90,7 @@
   align-items: center;
   justify-content: center;
   width: 90%;
-  background: radial-gradient(circle at center, #D4D0AF 0%, #90A7C4 100%);
+  background: radial-gradient(circle at center, #d4d0af 0%, #90a7c4 100%);
   color: #fff;
   font-size: 36px;
   font-weight: bold;
@@ -104,37 +104,37 @@
 
 .create-banner h1 {
   font-family: 'montserrat';
-  font-size: 100px; 
+  font-size: 100px;
   margin: 0;
-  color: #496595; 
-  background: linear-gradient(to bottom, #496595, #17202F);
+  color: #496595;
+  background: linear-gradient(to bottom, #496595, #17202f);
 
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
 
-  font-weight: 900; 
+  font-weight: 900;
   position: relative;
   left: 420px;
 }
 
 .create-banner p {
-font-family: 'montserrat';
-font-size: 65px; 
-font-weight: 900;
-margin: 0;
+  font-family: 'montserrat';
+  font-size: 65px;
+  font-weight: 900;
+  margin: 0;
 
-color: #496595; 
-background: linear-gradient(0deg, #496595 0%, #17202F 100%); 
+  color: #496595;
+  background: linear-gradient(0deg, #496595 0%, #17202f 100%);
 
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent; 
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px 4px 8px rgba(0, 0, 0, 0.3);  
-position: relative;
-left: 420px;
-top: -20px;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  left: 420px;
+  top: -20px;
 }
 
 .create-banner p {
@@ -144,44 +144,47 @@ top: -20px;
 }
 
 .popup {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5); 
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
 .popup-content {
-background-color: white;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-text-align: center;
-width: 300px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 300px;
 }
 
 .popup-content p {
-font-size: 16px;
-color: #333;
-margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .popup-close-btn {
-background-color: #496595;
-color: white;
-border: none;
-padding: 10px 20px;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
+  background-color: #496595;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .popup-close-btn:hover {
-background-color: #3b82f6;
+  background-color: #3b82f6;
 }
 
+.toggle-password-btn {
+  color: black;
+}

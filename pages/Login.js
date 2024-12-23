@@ -13,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const handleLogin = async e => {
     e.preventDefault()
@@ -52,14 +53,22 @@ const Login = () => {
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-
+            <div className="password-container">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                placeholder="Password"
+                required
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? 'Hide Password' : 'Show Password'}
+              </button>
+            </div>
             <a href="#" className="forgot-password">
               Forgot Password?
             </a>
@@ -68,7 +77,11 @@ const Login = () => {
               <button type="submit" className="login-btn">
                 Login
               </button>
-              <button type="button" className="signup-btn">
+              <button
+                type="button"
+                className="signup-btn"
+                onClick={() => navigate('/register')}
+              >
                 Sign Up
               </button>
             </div>

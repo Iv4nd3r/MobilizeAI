@@ -103,6 +103,12 @@ const AboutMePage = () => {
             type="text"
             placeholder="Enter Home Address"
           />
+          <button
+            className="change-password-button"
+            onClick={togglePasswordVisibility}
+          >
+            Save Home Address
+          </button>
         </div>
 
         <div className="address-section">
@@ -112,12 +118,18 @@ const AboutMePage = () => {
             type="text"
             placeholder="Enter Work Address"
           />
+          <button
+            className="change-password-button"
+            onClick={togglePasswordVisibility}
+          >
+            Save Work Address
+          </button>
         </div>
 
         <div className="change-password-section">
           <input
             className="change-password-input"
-            type={passwordVisible ? 'text' : 'password'}
+            type="password"
             placeholder="Change Password"
           />
           <button
