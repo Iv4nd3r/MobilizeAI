@@ -1,3 +1,45 @@
+async function userSignIn(name, email, password) {
+  try {
+    const response = await fetch(
+      'https://server-one-clover.vercel.app/signup',
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      }
+    )
+    return response
+  } catch (error) {
+    console.error('Error during signup:', error)
+  }
+}
+
+async function userLogIn(email, password) {
+  try {
+    const response = await fetch('https://server-one-clover.vercel.app/login', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    })
+    return response
+  } catch (error) {
+    console.error('Error during signin:', error)
+  }
+}
+
 async function fetchUserData(token) {
   try {
     const response = await fetch(
@@ -22,4 +64,4 @@ async function fetchUserData(token) {
   }
 }
 
-export {fetchUserData}
+export { userSignIn, userLogIn, fetchUserData }

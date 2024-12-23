@@ -5,6 +5,7 @@ import axios from 'axios'
 import './SignUp.css'
 import { Link, useNavigate } from 'react-router-dom'
 import LandingPage from '../src/components/LandingPage'
+import { userSignIn } from './api/user'
 
 function Register() {
   const [name, setName] = useState('')
@@ -17,21 +18,7 @@ function Register() {
   const handleSignUp = async e => {
     e.preventDefault()
     try {
-      const response = await fetch(
-        'https://server-one-clover.vercel.app/signup',
-        {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password
-          })
-        }
-      )
+      const response = await userSignIn(name, email, password)
       setMessage(response.message)
       setShowPopup(true)
       const data = await response.json()

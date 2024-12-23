@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import LandingPage from '/src/components/LandingPage'
 import Cookies from 'js-cookie'
+import { userLogIn } from './api/user'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -16,20 +17,7 @@ const Login = () => {
   const handleLogin = async e => {
     e.preventDefault()
     try {
-      const response = await fetch(
-        'https://server-one-clover.vercel.app/login',
-        {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email,
-            password
-          })
-        }
-      )
+      const response = await userLogIn(email, password)
       setMessage(response.message)
       const data = await response.json()
       if (response.ok) {

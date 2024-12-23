@@ -101,7 +101,7 @@ const Home = () => {
         .catch(error => {
           console.error('Error fetching user data:', error)
         })
-      loadEnergyData(token)
+      fetchEnergy(token)
     }
   }, [])
 
@@ -203,8 +203,8 @@ const Home = () => {
     }
   }
 
-  async function loadEnergyData(token) {
-    const energyData = await fetchEnergyData(token)
+  const fetchEnergy = async token => {
+    const energyData = await loadEnergyData(token)
     const today = new Date().toLocaleDateString()
 
     // Filter energy data for today
@@ -384,7 +384,7 @@ const Home = () => {
   const handleSaveRoute = async () => {
     getCalculation(weatherData.main.temp, weatherData.main.humidity)
     energySave(userMail)
-    loadEnergyData(token)
+    fetchEnergy(token)
   }
 
   const lineChartOptions = {
@@ -770,4 +770,9 @@ const Home = () => {
   )
 }
 
-export default Home
+async function loadEnergyData(token) {
+  const energyData = await fetchEnergyData(token)
+  return energyData
+}
+
+export { Home, loadEnergyData }
