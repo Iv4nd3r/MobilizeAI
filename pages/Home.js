@@ -59,6 +59,8 @@ const Home = () => {
   const [destinationLocationInput, setDestinationLocationInput] = useState('')
   const [startLocation, setStartLocation] = useState({ lat: 0, lon: 0 })
   const [endLocation, setEndLocation] = useState({ lat: 0, lon: 0 })
+  const [homeLocation, setHomeLocation] = useState(null)
+  const [workLocation, setWorkLocation] = useState(null)
   const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([])
   const [lock, setLock] = useState('')
   const [vehicleType, setVehicleType] = useState('car')
@@ -97,6 +99,8 @@ const Home = () => {
         .then(userData => {
           setUserName(userData.name) // Set the user's name in the state
           setUserMail(userData.email) // Set the user's mail in the state
+          setHomeLocation(userData.homeAdd)
+          setWorkLocation(userData.workAdd)
         })
         .catch(error => {
           console.error('Error fetching user data:', error)
@@ -289,6 +293,15 @@ const Home = () => {
       } catch (error) {
         console.error('Error fetching autocomplete suggestions:', error)
       }
+    } else if (homeLocation.length > 0 && workLocation.length > 0) {
+      setAutocompleteSuggestions([
+        { label: 'Home', add: homeLocation },
+        { label: 'Work', add: workLocation }
+      ])
+    } else if (homeLocation.length > 0) {
+      setAutocompleteSuggestions([{ label: 'Home', homeLocation }])
+    } else if (workLocation.length > 0) {
+      setAutocompleteSuggestions([{ label: 'Work', workLocation }])
     } else {
       setAutocompleteSuggestions([])
     }
@@ -302,8 +315,21 @@ const Home = () => {
         lon: (bbox[0] + bbox[2]) / 2
       }
     } else {
-      // Fallback to geocoding data if bbox is not available
-      locationData = await fetchGeocodingData(suggestion)
+      //Retry to fetch the Geocoding data
+      const data = await autocompleteSearch(suggestion.add)
+      const feature = data.features[0]
+      if (feature.bbox && feature.bbox.length >= 4) {
+        locationData = {
+          lat: (feature.bbox[1] + feature.bbox[3]) / 2,
+          lon: (feature.bbox[0] + feature.bbox[2]) / 2
+        }
+      } else if (feature.geometry && feature.geometry.coordinates) {
+        const [lon, lat] = feature.geometry.coordinates
+        locationData = { lat, lon }
+      } else {
+        // Fallback to geocoding data if bbox is not available
+        locationData = await fetchGeocodingData(suggestion)
+      }
     }
     try {
       switch (lock) {
@@ -469,6 +495,7 @@ const Home = () => {
             <div className="location-change">
               <div className="location-input-container">
                 <input
+                  id="location-input"
                   type="text"
                   placeholder="Not the right location ?"
                   className="location-input"
@@ -485,17 +512,15 @@ const Home = () => {
                 </button>
               </div>
               {autocompleteSuggestions.length > 0 &&
-                locationInput.length > 0 && (
+                locationInput.length >= 0 &&
+                lock === 1 && (
                   <div className="location-search-autocomplete-suggestions">
                     {autocompleteSuggestions.map((suggestion, index) => (
                       <div
                         key={index}
                         className="autocomplete-suggestion"
                         onClick={() =>
-                          handleSuggestionClick(
-                            suggestion.label,
-                            suggestion.bbox
-                          )
+                          handleSuggestionClick(suggestion, suggestion.bbox)
                         }
                       >
                         {suggestion.label}
@@ -664,6 +689,7 @@ const Home = () => {
       <section className="map-section">
         <div className="map-overlay">
           <input
+            id="start-location-input"
             type="text"
             placeholder="Your Location"
             className="start-location-input"
@@ -672,14 +698,15 @@ const Home = () => {
             onKeyUp={e => handleSearchBox(e, 2)}
           />
           {autocompleteSuggestions.length > 0 &&
-            startLocationInput.length > 0 && (
+            startLocationInput.length >= 0 &&
+            lock === 2 && (
               <div className="start-search-autocomplete-suggestions">
                 {autocompleteSuggestions.map((suggestion, index) => (
                   <div
                     key={index}
                     className="autocomplete-suggestion"
                     onClick={() =>
-                      handleSuggestionClick(suggestion.label, suggestion.bbox)
+                      handleSuggestionClick(suggestion, suggestion.bbox)
                     }
                   >
                     {suggestion.label}
@@ -688,6 +715,7 @@ const Home = () => {
               </div>
             )}
           <input
+            id="destination-location-input"
             type="text"
             placeholder="Choose Destination"
             className="destination-location-input"
@@ -696,14 +724,15 @@ const Home = () => {
             onKeyUp={e => handleSearchBox(e, 3)}
           />
           {autocompleteSuggestions.length > 0 &&
-            destinationLocationInput.length > 0 && (
+            destinationLocationInput.length >= 0 &&
+            lock === 3 && (
               <div className="end-search-autocomplete-suggestions">
                 {autocompleteSuggestions.map((suggestion, index) => (
                   <div
                     key={index}
                     className="autocomplete-suggestion"
                     onClick={() =>
-                      handleSuggestionClick(suggestion.label, suggestion.bbox)
+                      handleSuggestionClick(suggestion, suggestion.bbox)
                     }
                   >
                     {suggestion.label}

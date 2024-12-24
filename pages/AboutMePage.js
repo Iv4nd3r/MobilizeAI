@@ -216,7 +216,8 @@ const AboutMePage = () => {
             onKeyUp={e => handleSearchBox(e, 1)}
           />
           {autocompleteSuggestions.length > 0 &&
-            locationInputHome.length > 0 && (
+            locationInputHome.length > 0 &&
+            lock === 1 && (
               <div className="home-search-autocomplete-suggestions">
                 {autocompleteSuggestions.map((suggestion, index) => (
                   <div
@@ -245,7 +246,8 @@ const AboutMePage = () => {
             onKeyUp={e => handleSearchBox(e, 2)}
           />
           {autocompleteSuggestions.length > 0 &&
-            locationInputWork.length > 0 && (
+            locationInputWork.length > 0 &&
+            lock === 2 && (
               <div className="work-search-autocomplete-suggestions">
                 {autocompleteSuggestions.map((suggestion, index) => (
                   <div
