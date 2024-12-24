@@ -37,3 +37,6 @@ yarn-error.log*
 .vscode
 .env*.local
 d
+
+# build results
+dist/
