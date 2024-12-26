@@ -209,8 +209,9 @@ const AboutMePage = () => {
           <h3>Home Address</h3>
           <input
             className="address-input"
-            type="text"
+            type="search"
             placeholder="Enter Home Address"
+            enterKeyHint="search"
             value={locationInputHome}
             onChange={handleHomeLocationChange}
             onKeyUp={e => handleSearchBox(e, 1)}
@@ -239,8 +240,9 @@ const AboutMePage = () => {
           <h3>Work Address</h3>
           <input
             className="address-input"
-            type="text"
+            type="search"
             placeholder="Enter Work Address"
+            enterKeyHint="search"
             value={locationInputWork}
             onChange={handleWorkLocationChange}
             onKeyUp={e => handleSearchBox(e, 2)}

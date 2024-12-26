@@ -44,6 +44,7 @@ import WindSpeedIcon from '../src/assets/WindSpeedIcon.svg'
 import SearchIcon from '../src/assets/search-icon.svg'
 import AIIcon from '../src/assets/ai-icon.svg'
 import SendBtn from '../src/assets/Send-Button.svg'
+import { set } from 'mongoose'
 
 let initialFetchDone = false
 
@@ -336,15 +337,18 @@ const Home = () => {
         case 1:
           setLocation(locationData)
           fetchWeatherData(locationData.lat, locationData.lon)
+          setLocationInput(suggestion.label)
           break
         case 2:
           setStartLocation(locationData)
           if (endLocation.lat !== 0 && endLocation.lon !== 0) {
             RoutingMachine(locationData, endLocation, vehicleType)
           }
+          setStartLocationInput(suggestion.label)
           break
         case 3:
           setEndLocation(locationData)
+          setDestinationLocationInput(suggestion.label)
           if (
             ((endLocation.lat !== 0 && endLocation.lon !== 0) ||
               (locationData.lat !== 0 && locationData.lon !== 0)) &&
