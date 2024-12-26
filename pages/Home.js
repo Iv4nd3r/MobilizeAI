@@ -497,9 +497,10 @@ const Home = () => {
               <div className="location-input-container">
                 <input
                   id="location-input"
-                  type="text"
+                  type="search"
                   placeholder="Not the right location ?"
                   className="location-input"
+                  enterKeyHint="search"
                   value={locationInput}
                   onChange={handleLocationInputChange}
                   onKeyUp={e => handleSearchBox(e, 1)}
@@ -691,9 +692,10 @@ const Home = () => {
         <div className="map-overlay">
           <input
             id="start-location-input"
-            type="text"
+            type="search"
             placeholder="Your Location"
             className="start-location-input"
+            enterKeyHint="search"
             value={startLocationInput}
             onChange={handleStartLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 2)}
@@ -717,9 +719,10 @@ const Home = () => {
             )}
           <input
             id="destination-location-input"
-            type="text"
+            type="search"
             placeholder="Choose Destination"
             className="destination-location-input"
+            enterKeyHint="search"
             value={destinationLocationInput}
             onChange={handleDestinationLocationInputChange}
             onKeyUp={e => handleSearchBox(e, 3)}
