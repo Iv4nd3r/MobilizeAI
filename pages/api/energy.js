@@ -87,7 +87,7 @@ async function energySave(email) {
   })
     .then(response => {
       if (response.status === 201) {
-        console.log('Energy usage saved successfully')
+        alert('Energy usage saved successfully')
       } else {
         console.error('Failed to save energy usage')
       }

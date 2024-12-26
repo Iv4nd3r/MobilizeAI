@@ -408,6 +408,7 @@ const Home = () => {
   }
 
   const handleSaveRoute = async () => {
+    const token = Cookies.get('token') // Retrieve the token from cookies
     getCalculation(weatherData.main.temp, weatherData.main.humidity)
     energySave(userMail)
     fetchEnergy(token)
